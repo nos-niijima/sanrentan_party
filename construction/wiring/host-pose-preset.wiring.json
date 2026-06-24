@@ -1,0 +1,111 @@
+{
+  "screen": "host-pose-preset",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar heading '第NR の出題'",
+      "kind": "display",
+      "wiredTo": "client.barTitle",
+      "alive": true,
+      "userTask": "現在編集中のラウンド番号を確認する"
+    },
+    {
+      "selector": "WalnutBar 卓名行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "対戦中の自端末で卓名を控えめに確認する"
+    },
+    {
+      "selector": "tab '新規作成'",
+      "kind": "toggle",
+      "wiredTo": "client.setTab('new')",
+      "alive": true,
+      "userTask": "新規作成タブへ切替"
+    },
+    {
+      "selector": "tab 'プリセット' (aria-selected=true)",
+      "kind": "toggle",
+      "wiredTo": "client.setTab('preset')",
+      "alive": true,
+      "userTask": "プリセットタブをアクティブにする"
+    },
+    {
+      "selector": "input aria-label='プリセットを検索'",
+      "kind": "input",
+      "wiredTo": "client.setPresetSearch (filteredPresets で list を絞る)",
+      "alive": true,
+      "userTask": "プリセットを文字列でフィルタする"
+    },
+    {
+      "selector": "search icon '🔍'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "検索バーのアイコン装飾(絵文字)"
+    },
+    {
+      "selector": "preset card title (h3 prompt)",
+      "kind": "display",
+      "wiredTo": "backend.GameSpec.presets[i].prompt",
+      "alive": true,
+      "userTask": "登録済みプリセットのお題を確認する"
+    },
+    {
+      "selector": "preset card choice chips (1..3 + ＋N)",
+      "kind": "display",
+      "wiredTo": "backend.GameSpec.presets[i].choices",
+      "alive": true,
+      "userTask": "プリセットの選択肢プレビューを視認する"
+    },
+    {
+      "selector": "button '使う' (per preset card)",
+      "kind": "button",
+      "wiredTo": "client.loadPreset (prompt/choices state へ書き戻し + setTab('new'))",
+      "alive": true,
+      "userTask": "プリセットを出題エディタへ読み込む"
+    },
+    {
+      "selector": "empty state 'プリセットがありません'",
+      "kind": "display",
+      "wiredTo": "client.filteredPresets.length === 0 (動的分岐)",
+      "alive": true,
+      "userTask": "検索結果が空であることを把握する"
+    },
+    {
+      "selector": "ダッシュ枠 '＋ プリセットを新規登録' (data-testid=sr-preset-create-button)",
+      "kind": "button",
+      "wiredTo": "backend.GameSpec.presets (append via POST /api/games/:id/presets)",
+      "alive": true,
+      "userTask": "現在の出題編集中の prompt/choices を作品のプリセットとして保存し、後で別の試遊で再利用できるようにする (作品オーナーのみ表示)"
+    },
+    {
+      "selector": "副 CTA 'プリセットに保存' (data-testid=sr-save-preset-secondary-cta)",
+      "kind": "button",
+      "wiredTo": "backend.GameSpec.presets (append via POST /api/games/:id/presets)",
+      "alive": true,
+      "userTask": "新規作成タブの出題エディタ下部から、現在の prompt/choices をプリセット集に保存する (作品オーナーのみ表示)"
+    },
+    {
+      "selector": "save preset dialog (data-testid=sr-save-preset-dialog)",
+      "kind": "input",
+      "wiredTo": "client.setPrompt + client.setChoicesText → backend.GameSpec.presets (POST /api/games/:id/presets body={prompt, choices})",
+      "alive": true,
+      "userTask": "プリセットとして保存する prompt/choices を編集・確認してから保存する"
+    },
+    {
+      "selector": "save preset toast (data-testid=sr-save-preset-toast)",
+      "kind": "display",
+      "wiredTo": "client.savePresetToast (POST 成功時に 2.4 秒表示)",
+      "alive": true,
+      "userTask": "保存成功を視覚 + SR (role=status) で受け取る"
+    },
+    {
+      "selector": "footer hint '「使う」を押すと出題エディタに読み込まれ、公開できます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "プリセットタブの静的説明 literal"
+    }
+  ]
+}

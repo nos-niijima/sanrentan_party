@@ -1,0 +1,352 @@
+{
+  "screen": "result-reveal-shared-screen",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/app/rooms/[id]/share/page.tsx",
+  "note": "2026-06-24 リビール演出 B 案対応: server announce.phase (idle|buildup|done) と client overlay phase (+reveal,scores) に基づいて 1 画面で多 frame を切替表示する。dynamic UI element の alive 判定はその要素が「いずれかの phase で観測可能変化を持つか」で判断する。",
+  "elements": [
+    {
+      "selector": "AppIcon 4 ドットグリッド",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "アプリブランドアイコン(固定 SVG, 視覚のみ)"
+    },
+    {
+      "selector": "title 'サンレンタン'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "アプリ名の静的ブランディング literal"
+    },
+    {
+      "selector": "badge '画面共有中 ・ ホストの画面' (赤ドット付き)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "share page 上で常時表示する静的バッジ(役割は URL 由来で確定)"
+    },
+    {
+      "selector": "statusTag '{発表前|抽選中…|公開中|スコア発表|結果確定}' (data-testid=sr-status-tag)",
+      "kind": "display",
+      "wiredTo": "client.effectivePhase (= server announce.phase + client timer)",
+      "alive": true,
+      "userTask": "プロジェクタ視聴者がリビール演出の現在 phase を視覚的に把握する"
+    },
+    {
+      "selector": "卓名 '{roomName}' (Room.name or generic '試遊卓')",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (fallback: literal '試遊卓')",
+      "alive": true,
+      "userTask": "プロジェクタ視聴者がどの卓の結果かを把握する",
+      "note": "2026-06-24 high-host-leak-in-share-ranking 修正: 旧フォールバック `${hostName}の試遊卓` を廃止。確定仕様 (host=進行専任、共有画面に hostName を絶対露出しない) に整合させるため、Room.name 未設定時は generic literal '試遊卓' のみを表示する。"
+    },
+    {
+      "selector": "badge '部屋 #{roomCode}'",
+      "kind": "display",
+      "wiredTo": "backend.Room.id (params.id.slice(-4).toUpperCase())",
+      "alive": true,
+      "userTask": "プロジェクタ視聴者が部屋コードを確認する"
+    },
+    {
+      "selector": "WaitingScreen link 'ホスト管理に戻る' (revealed 前のみ)",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id})",
+      "alive": true,
+      "userTask": "ホストが管理画面へ戻る"
+    },
+    {
+      "selector": "WaitingScreen text 'ホストの出題/正解公開を待っています'",
+      "kind": "display",
+      "wiredTo": "client.round (== null or status !== 'revealed' で分岐)",
+      "alive": true,
+      "userTask": "公開待ち状態であることを視聴者が把握する"
+    },
+    {
+      "selector": "loading text '読み込み中…' (useRoom loading 時)",
+      "kind": "display",
+      "wiredTo": "client.loading (useRoom hook の loading state)",
+      "alive": true,
+      "userTask": "データ取得中であることを把握する"
+    },
+    {
+      "selector": "RoomLoadErrorScreen 見出し 'この卓は存在しません' or '卓を読み込めませんでした' (role=alert)",
+      "kind": "display",
+      "wiredTo": "client.error.status (ApiError.status === 404 で文言分岐)",
+      "alive": true,
+      "userTask": "low-share-invalid-id-fallback (2026-06-24) 修正: /rooms/<bad>/share で存在しない roomId にアクセスした際、useRoom error を見て /rooms/[id]/page.tsx と同じ RoomLoadErrorScreen を表示し、無限「読み込み中…」ループを止める。"
+    },
+    {
+      "selector": "RoomLoadErrorScreen detail text ('招待リンクが無効…' / '通信エラー…' + error.message)",
+      "kind": "display",
+      "wiredTo": "client.error.message (useRoom が返した Error の message)",
+      "alive": true,
+      "userTask": "ロード失敗の原因テキストを確認する"
+    },
+    {
+      "selector": "RoomLoadErrorScreen link '/browse に戻る' (next/link href=/browse)",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "ロード失敗時に公開卓一覧 /browse へ戻る"
+    },
+    {
+      "selector": "denial 見出し 'ホスト用画面です' (view.you?.seat !== hostSeat 時)",
+      "kind": "display",
+      "wiredTo": "client (view.you?.seat === hostSeat 判定で分岐)",
+      "alive": true,
+      "userTask": "med-share-anonymous-leak (2026-06-24) 修正: /rooms/:id/share は元来「ホスト端末からプロジェクタへ映す」用途。元実装は完全 anonymous 閲覧可能で isPublic=false 卓も leak していた。backend に share token を生やすのは大袈裟なので frontend で view.you?.seat === hostSeat を確認し、それ以外のアクセス (未認証 / 非メンバ / 非ホストメンバ) は誤遷移防止画面を表示する。"
+    },
+    {
+      "selector": "denial 説明 'このページは卓のホストがプロジェクタへ結果を映すための画面です。プレイヤーは自分の端末で対戦画面を開いてください。'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホスト専用画面である旨を伝える静的注釈 literal"
+    },
+    {
+      "selector": "denial link '公開卓一覧へ戻る' (→ /browse)",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "誤遷移したユーザーが公開卓一覧へ戻る導線"
+    },
+    {
+      "selector": "ラウンドバッジ '第{history.length}R'",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.history.length",
+      "alive": true,
+      "userTask": "公開中のラウンド番号を確認する",
+      "note": "2026-06-24 リビール演出 B 案対応: 旧実装は history.length+1 を表示していたが、engine は reveal 時点で round を history に push 済のため、共有画面では history.length そのものが「現在公開中のラウンド番号」になる。"
+    },
+    {
+      "selector": "結果確定 バッジ",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.status='revealed' (この path 自体が status 由来)",
+      "alive": true,
+      "userTask": "ラウンドが確定済みであることを把握する"
+    },
+    {
+      "selector": "お題テキスト ({round.prompt})",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.prompt",
+      "alive": true,
+      "userTask": "プロジェクタ視聴者が公開中のお題を読む"
+    },
+    {
+      "selector": "見出し '— 正 解 発 表 —'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "大見出し literal(視覚演出)"
+    },
+    {
+      "selector": "BigPodium 1着/2着/3着 chip (revealCount に応じて ? シルエット or g.n+answer[i])",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.answer + choices + client.revealStep",
+      "alive": true,
+      "userTask": "リビール演出で 1→2→3 着の正解を段階的に視聴者に開示する。reveal 完了後はホストの正解 1〜3 着を大画面で確認する。"
+    },
+    {
+      "selector": "BigPodium 表彰台 step blocks (1/2/3 数字)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "表彰台ブロック装飾(高さ違い, 数字 literal)"
+    },
+    {
+      "selector": "BigPodium ★ 金メダル + 赤/金 リボン(1着のみ)",
+      "kind": "display",
+      "wiredTo": "client.revealStep>=1 で表示切替",
+      "alive": true,
+      "userTask": "1着が公開されたタイミングで強調装飾を出す(視覚演出)"
+    },
+    {
+      "selector": "BigPodium 旗ポール (corner flag)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "コーナー旗の装飾(視覚のみ)"
+    },
+    {
+      "selector": "idle CTA button '結果発表 ▶' (data-testid=sr-announce-start-cta) — phase=idle のみ",
+      "kind": "button",
+      "wiredTo": "backend.action announceStart (POST /api/rooms/:id/actions)",
+      "alive": true,
+      "userTask": "ホストがリビール演出 (B 案) を開始する。押下で announce.phase が idle→buildup に遷移し、client timer chain (T0=700ms / GAP=1700ms) が自動再生を開始。"
+    },
+    {
+      "selector": "idle CTA hint 'ホスト操作：押すと1位から自動で公開します'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "idle phase 用の静的ヒント literal"
+    },
+    {
+      "selector": "vignette overlay (radial gradient) — phase=buildup/reveal のみ可視",
+      "kind": "display",
+      "wiredTo": "client.effectivePhase (isRevealing で opacity 切替)",
+      "alive": true,
+      "userTask": "演出中のフォーカス感を強調する spotlight 効果 (視覚演出)"
+    },
+    {
+      "selector": "flash overlay (id=srt-flash) — burst() 時に Web Animations API で発火",
+      "kind": "display",
+      "wiredTo": "client.burstTarget (revealStep 変化時)",
+      "alive": true,
+      "userTask": "順位公開の瞬間に白フラッシュで視聴者の注目を集める (視覚演出)"
+    },
+    {
+      "selector": "effect overlay (id=srt-overlay) coins/rays/sparks/ring",
+      "kind": "display",
+      "wiredTo": "client.burstTarget (revealStep 変化時に burstEffects() が DOM 生成)",
+      "alive": true,
+      "userTask": "順位公開の瞬間に光輪/金貨/スパークを噴出させる祝祭演出 (視覚演出)"
+    },
+    {
+      "selector": "見出し 'このレースの払戻' (phase=scores/done のみ)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "払戻セクションの静的見出し"
+    },
+    {
+      "selector": "subtext '成立は最高位の役ひとつだけ'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ルール説明の静的注釈 literal"
+    },
+    {
+      "selector": "PayoutCard (per プレイヤー, ホスト除く) — cardsShown でカウントイン",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer + state.round.predictions[seat] + client.cardsShown (visible 切替)",
+      "alive": true,
+      "userTask": "scores phase で各プレイヤーの予想と払戻を 1 枚ずつカウントイン表示する。done 後は全件常時表示。"
+    },
+    {
+      "selector": "PayoutCard アバター initial 文字",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer.name (slice(0,1))",
+      "alive": true,
+      "userTask": "プレイヤーの頭文字で識別する"
+    },
+    {
+      "selector": "PayoutCard 駒色アバター背景",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer.color (fallback seat → 既定色)",
+      "alive": true,
+      "userTask": "駒色でプレイヤーを識別する"
+    },
+    {
+      "selector": "PayoutCard 'レース勝者' バッジ (isWinner のみ)",
+      "kind": "display",
+      "wiredTo": "client.maxPts derive + (prediction.points === maxPts)",
+      "alive": true,
+      "userTask": "今ラウンド最高得点者を視認する"
+    },
+    {
+      "selector": "PayoutCard 役 chip ({hand})",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[seat].hand",
+      "alive": true,
+      "userTask": "各プレイヤーが取った役を確認する"
+    },
+    {
+      "selector": "PayoutCard 馬券チップ列 (prediction.answer → 枠番)",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[seat].answer",
+      "alive": true,
+      "userTask": "各プレイヤーの予想内容を確認する"
+    },
+    {
+      "selector": "PayoutCard '+{pts}'",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[seat].points",
+      "alive": true,
+      "userTask": "今ラウンド獲得点を確認する"
+    },
+    {
+      "selector": "未投票プレイヤーカード '未投票'",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[seat] === undefined で分岐",
+      "alive": true,
+      "userTask": "未投票プレイヤーがいたことを把握する"
+    },
+    {
+      "selector": "累積順位 見出し '累積順位'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "累積順位パネルの静的見出し"
+    },
+    {
+      "selector": "累積順位 sublabel '{roundCountLabel}' ('{N}レース終了')",
+      "kind": "display",
+      "wiredTo": "state.history.length",
+      "alive": true,
+      "userTask": "プロジェクタ視聴者が経過レース数を確認する (engine は reveal 時に history へ push するため history.length = 終了レース数)。"
+    },
+    {
+      "selector": "ShareLeaderboard rows (per プレイヤー, ホスト除く) — cardsShown で延べ加算カウントイン",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer + state.scores + roundPts + client.cardsShown",
+      "alive": true,
+      "userTask": "scores phase で順位行を上から加算カウントインしていき、done で全行を post 値で表示する"
+    },
+    {
+      "selector": "Leaderboard 順位バッジ (1..N)",
+      "kind": "display",
+      "wiredTo": "client (sort 後 index)",
+      "alive": true,
+      "userTask": "順位を視覚で識別する"
+    },
+    {
+      "selector": "Leaderboard アバター initial + color",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer.name + RoomPlayer.color (fallback)",
+      "alive": true,
+      "userTask": "プレイヤーを駒色と頭文字で識別する"
+    },
+    {
+      "selector": "Leaderboard 累積点 + 増分 '+{delta}'",
+      "kind": "display",
+      "wiredTo": "backend.state.scores[seat] + round.predictions[seat].points + client.cardsShown",
+      "alive": true,
+      "userTask": "累積点と今R増分を確認する (cardsShown が進むごとに反映)"
+    },
+    {
+      "selector": "footer 'ホストが次のお題を準備しています…' + 3 ドット",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホスト操作待ちの静的注釈 literal + 装飾ドット(アニメ無)"
+    },
+    {
+      "selector": "footer subtext 'プレイヤーは自分の端末で次の予想を待ちましょう'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "視聴者向けの静的注釈 literal"
+    },
+    {
+      "selector": "footer button '↻ もう一度見る' (data-testid=sr-announce-replay) — phase=done のみ",
+      "kind": "button",
+      "wiredTo": "client.event (タイマー再起動 + cardsShown=0 + confetti 再発火。server state は done のまま維持)",
+      "alive": true,
+      "userTask": "ホストが演出を最初から再生し直す。server state は維持されるためプレイヤー手元の表示には影響しない。"
+    },
+    {
+      "selector": "footer button 'ホスト操作：次のお題を出す' (data-testid=sr-host-next-round)",
+      "kind": "button",
+      "wiredTo": "navigate(/rooms/{id}) (router.push)",
+      "alive": true,
+      "userTask": "ホストが管理画面へ遷移して次のお題出題を行う"
+    },
+    {
+      "selector": "confetti 90 枚 (done 遷移時) — Web Animations API で降る",
+      "kind": "display",
+      "wiredTo": "client.confettiCount (done 遷移時に +1 → key で ConfettiBurst 再 mount)",
+      "alive": true,
+      "userTask": "演出完了の祝祭感を演出 (replay で再発火可能)"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "screen": "host-truth-pick",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar heading h2 '第NR 正解を記入'",
+      "kind": "display",
+      "wiredTo": "client.barTitle (round.status='open' から derive)",
+      "alive": true,
+      "userTask": "現在のラウンドが正解選択フェーズであることを確認する"
+    },
+    {
+      "selector": "badge 'ホスト操作卓'",
+      "kind": "display",
+      "wiredTo": "client.isHost",
+      "alive": true,
+      "userTask": "ホスト権限で操作中であることを確認する"
+    },
+    {
+      "selector": "WalnutBar 卓名行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "対戦中の自端末で卓名を控えめに確認する"
+    },
+    {
+      "selector": "InviteCard (collapsible=false 展開状態)",
+      "kind": "display",
+      "wiredTo": "backend.Room.id + backend.RoomPlayer (others count)",
+      "alive": true,
+      "userTask": "招待リンクと参加者数を確認する(open 中も招待を継続)"
+    },
+    {
+      "selector": "InviteCard button 'コピー'/'リンクをコピー'",
+      "kind": "button",
+      "wiredTo": "clipboard.link",
+      "alive": true,
+      "userTask": "招待リンクをコピーする"
+    },
+    {
+      "selector": "InviteCard link '共有画面（大画面）を開く →'",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share)",
+      "alive": true,
+      "userTask": "共有画面を別タブで開く"
+    },
+    {
+      "selector": "緑帯お題リマインダ (round.prompt 表示)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.prompt",
+      "alive": true,
+      "userTask": "公開中のお題を確認する"
+    },
+    {
+      "selector": "instruction 'あなたの1〜3着を選ぶと予想が締め切られ、答え合わせされます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "操作説明 literal(静的)"
+    },
+    {
+      "selector": "button (各 round.choices 行 / 枠番チップ付き)",
+      "kind": "button",
+      "wiredTo": "client.toggle(c) → picks state (順位 = index)",
+      "alive": true,
+      "userTask": "選択肢に 1〜3 着を順に割り当てる/取り消す"
+    },
+    {
+      "selector": "枠番チップ (g.n / GATES[i])",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.choices index",
+      "alive": true,
+      "userTask": "各選択肢の枠番(色)を視認する"
+    },
+    {
+      "selector": "選択肢ラベル {c}",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.choices[i]",
+      "alive": true,
+      "userTask": "選択肢のテキストを確認する"
+    },
+    {
+      "selector": "badge 'えらぶ' / '1着' / '2着' / '3着' (per row)",
+      "kind": "display",
+      "wiredTo": "client.picks.indexOf(c) (動的割当順位)",
+      "alive": true,
+      "userTask": "各選択肢に割り当てた順位を視認する"
+    },
+    {
+      "selector": "label 'あなたの本命（正解）'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "本命プレビューセクションの静的ラベル"
+    },
+    {
+      "selector": "preview text (dynamicPreview: '1〜3着をえらぶ' or '① → ②' or '③ → ① → ⑤')",
+      "kind": "display",
+      "wiredTo": "client.picks → round.choices index → 丸数字シーケンス",
+      "alive": true,
+      "userTask": "現在選んだ正解シーケンスをプレビュー確認する"
+    },
+    {
+      "selector": "submission banner '{submittedCount}人 提出済み ／ {pendingCount}人 未提出' or 'まだ予想がありません'",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.submittedSeats + rows.length",
+      "alive": true,
+      "userTask": "プレイヤーの予想提出状況をリアルタイム(ポーリング)で確認する"
+    },
+    {
+      "selector": "hint '締切後は変更不可'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "提出状況バナー右の静的注釈"
+    },
+    {
+      "selector": "error message (err state)",
+      "kind": "display",
+      "wiredTo": "client.err (reveal API 失敗時)",
+      "alive": true,
+      "userTask": "正解公開失敗時のエラー文言を確認する"
+    },
+    {
+      "selector": "button '🔒 正解を公開して締め切る' (CTA, picks.length===3 で活性)",
+      "kind": "button",
+      "wiredTo": "backend.act('reveal', {answer: picks})",
+      "alive": true,
+      "userTask": "正解を公開して予想を締め切り、結果フェーズへ遷移する"
+    }
+  ]
+}

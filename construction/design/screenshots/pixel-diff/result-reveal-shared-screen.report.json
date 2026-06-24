@@ -1,0 +1,14 @@
+{
+  "frameId": "result-reveal-shared-screen",
+  "pixelDiffCount": null,
+  "totalPixels": null,
+  "ratio": null,
+  "designRenderSuccess": true,
+  "implAvailable": true,
+  "files": {
+    "design": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/result-reveal-shared-screen.design.png",
+    "impl": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/result-reveal-shared-screen.impl.png",
+    "diff": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/result-reveal-shared-screen.diff.png"
+  },
+  "error": null
+}

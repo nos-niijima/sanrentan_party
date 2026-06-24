@@ -1,0 +1,275 @@
+{
+  "$comment": "サンレンタン デザイン準拠仕様。フロントの準拠テスト(Playwright)が消費する。requiredTexts はデザイン由来の実際の文言。役割/状態の mustNotShow は越権UIの検出用。screenId: join/host/predict/result は /rooms/:id 上で SanrentanPlay が role(host/player) × state(なし/open/revealed) に応じてレンダリングする論理画面。",
+  "designSource": {
+    "projectId": "20557f91-cb19-4e4f-92ec-51d3d7ec62a3",
+    "colors": {
+      "feltGreen": "#3E6F52",
+      "walnutHostBar": "#6B4F3A",
+      "paper": "#F1E7D3",
+      "orangeCta": "#C56A2C",
+      "redCloseCta": "#C8392F"
+    },
+    "gateColors": [
+      { "n": 1, "name": "やきそば", "bg": "#F7F4EC" },
+      { "n": 2, "name": "ほたて", "bg": "#2E2A24" },
+      { "n": 3, "name": "マシュマロ", "bg": "#C8392F" },
+      { "n": 4, "name": "しいたけ", "bg": "#2F6FB0" },
+      { "n": 5, "name": "とうもろこし", "bg": "#ECC23E" },
+      { "n": 6, "name": "おにぎり", "bg": "#3E8E52" }
+    ],
+    "hands": [
+      { "name": "サンレンタン", "points": 6, "how": "順位までぴったり" },
+      { "name": "サンレンプク", "points": 4, "how": "3つ当たり(順不同)" },
+      { "name": "ニレンタン", "points": 3, "how": "1・2着がぴったり" },
+      { "name": "プクプク", "points": 2, "how": "2つ当たり(順不同)" },
+      { "name": "タン", "points": 1, "how": "1着がぴったり" }
+    ]
+  },
+  "screens": [
+    {
+      "screenId": "dashboard",
+      "designFile": "Dashboard.dc.html",
+      "route": "/browse",
+      "role": "shared",
+      "state": "n/a",
+      "requiredTexts": [
+        "Board Game Trial",
+        "試遊台",
+        "新着",
+        "人気",
+        "マイ卓",
+        "テスト募集中の卓",
+        "新着の試遊台",
+        "ジャンルから探す",
+        "作者向けガイド",
+        "トークンについて",
+        "お問い合わせ"
+      ],
+      "requiredRegions": [
+        "トップバー(ブランド+ナビ+トークン残高)",
+        "フェルトヒーロー(今週の試遊台)",
+        "テスト募集中カードグリッド",
+        "新着の試遊台カード列",
+        "ジャンルから探すタイル",
+        "フッター"
+      ],
+      "controls": [
+        { "label": "ホストで卓を立てる", "action": "router.push('/rooms/new') でホスト用部屋作成画面へ" },
+        { "label": "招待リンクを貼り付け (URL)", "action": "招待 URL を入力して『参加』で /join/:id へ（旧 /rooms/:id 形式の URL も受け入れ、抽出後 /join/:id に正規化して push する）" }
+      ],
+      "mustNotShow": [
+        "ホスト操作卓バッジ(ダッシュボードはゲーム内画面ではない)",
+        "三連単 馬券(プレイ画面要素)",
+        "部屋コード4文字入力欄（2026-06-24 撤去: 招待 URL のみ受け付ける）",
+        "『あいことば』『#XXXX』『部屋コードで参加』などコード起因の文言（同上）",
+        "「作品を出す」ボタン（2026-06-24 dead-button cleanup で撤去: 作品投稿フロー未実装）",
+        "TopBar 検索ボックス（同上: 検索機能未配線）",
+        "GameCard 「遊ぶ」ボタン（同上: 作品詳細ページ未実装）",
+        "SectionHeader 「すべて見る →」（同上: セクション一覧ページ未実装）",
+        "ヒーロー「ルールを見る」ボタン（同上: ルール詳細ページ未実装）",
+        "ジャンルタイルの作品数 mock 値「18作品」等（同上: ジャンル別集計 backend 未配線）",
+        "GameCard / NewCard の固定 likes / plays 数値（同上: backend Feedback/PlayCount 未配線）"
+      ],
+      "joinFlowInputs": {
+        "policy": "招待 URL のみ受け付ける（1入力欄）。コード4文字入力は撤去（2026-06-24 ユーザー判断）。",
+        "expectedField": "招待リンクで参加（URL ペースト入力 1つ）。/join/<id> 形式を正とし、旧 /rooms/<id> 形式も受け入れる（抽出後は /join/<id> に正規化して router.push する）。",
+        "removedField": "あいことば/部屋コード4文字入力（撤去済み）",
+        "inviteUrlPath": "/join/:id (2026-06-24 招待 URL 分離: /rooms/:id = ホスト/着席プレイヤー専用、/join/:id = 招待 landing/未着席フォーム専用)"
+      },
+      "implementationNote": "browse/page.tsx は Dashboard.dc.html を移植。ヒーローはサンプル『深海図書館』ではなく実プロダクト『サンレンタン』に差し替え済み。カードデータはサンプルのまま（セクション見出しに『（未実装）』付与、likes/plays は『(サンプル)』『(例)』表記に置換）。参加入力は『招待リンクで参加』1入力欄に簡素化（2026-06-24: あいことばコンセプト撤去）。dead-button cleanup (2026-06-24): 作品を出す/検索/遊ぶ/すべて見る/ルールを見る/ジャンル件数の各 dead UI を撤去。"
+    },
+    {
+      "screenId": "join",
+      "designFile": "サンレンタン_画面1_入室.dc.html",
+      "route": "/join/:id （招待 landing / 未着席プレイヤー）。2026-06-24 招待 URL 分離: 未着席ユーザーが /rooms/:id を直接開いた場合も /join/:id に router.replace される（互換）。",
+      "role": "player",
+      "state": "lobby",
+      "requiredTexts": [
+        "サンレンタン",
+        "この卓に入場する",
+        "チーム名 または 名前",
+        "入場してこの卓につく",
+        "参加中",
+        "途中参加"
+      ],
+      "requiredRegions": [
+        "部屋カード(誰の卓か/参加状況)",
+        "名前/チーム名 入力",
+        "入場CTA"
+      ],
+      "controls": [
+        { "label": "名前 / チーム名 (入力)", "action": "ゲスト名を入力" },
+        { "label": "入場してこの卓につく", "action": "join() で着席（ログイン済）" },
+        { "label": "名前を入れて入場する", "action": "ゲストsignIn→自動入室（未ログイン）" },
+        { "label": "これは私です (既存メンバー rejoin)", "action": "未ログインなら signIn('guest',{name:existingName, callbackUrl:/join/<id>?j=1&c=<existingColor>}) → auto-join。backend.room.service.join() が同 userId の既存 RoomPlayer を見つけて same seat / same color を返す。ログイン済の場合は完全に拒否し『現在 <自分名> でログイン中です。<PlayerA> に rejoin するには一度サインアウトしてください』を role=alert で表示する（なりすまし攻撃ベクトル封鎖。別 userId で join({color}) すると新 seat に同 color が割り当てられて UI ラベルが嘘になるため）。" }
+      ],
+      "mustNotShow": [
+        "ホスト操作卓",
+        "正解を公開して締め切る",
+        "次のお題を出す",
+        "あいことば/部屋コード '#XXXX' 表示（2026-06-24 撤去）"
+      ],
+      "designOptions": "デザインは A(ウェルカム)/B(入場券)/C(パドック名簿) の3案。実装は1案相当（ウェルカム式に近い部屋カード+名前入力+CTA）。",
+      "implementationNote": "/join/[id]/page.tsx が招待 landing として JoinScreen を render する。SanrentanPlay.tsx の !me 分岐は /rooms/[id] にアクセスした未着席ユーザーを /join/[id] に router.replace する互換 fallback として残置。駒色選択(あなたの駒色/駒色をえらぶ)はデザインにあるが実装は未搭載。2026-06-24: あいことば（部屋コード）コンセプト撤去に伴い、部屋情報カードの『部屋 #XXXX』表示も除去（招待は URL 共有のみ）。2026-06-24 (med-host-self-invite-test-feedback): 着席済み user (host or seated player) が /join/<id> を開いた場合、silent な即 replace ではなく『あなたは既にこの卓に着席しています / ルームへ移動します…』バナーを 500ms 表示してから /rooms/<id> へ router.replace する（テストしたいだけのホストが混乱しないようにするため）。2026-06-24 (rejoin section): 入場券下に『すでに参加している場合は戻る』セクションを追加し、view.players (host 除く) を一覧化して『これは私です』ボタンで rejoin できるようにした。host のみの新規卓では section 自体を非表示。backend 側のなりすまし防止は実装されていない（性善説。ゲムマ会場前提）ため UI に『他人の名前を選ばないでください』と明記。2026-06-24 (rejoin-button-logged-in-user): ログイン済 user が『これは私です』を click した場合は join() を発火せず、visible alert (role='alert') で『現在 <自分名> でログイン中です。<PlayerA> に rejoin するには一度サインアウトしてください』を表示する処理に変更。旧 confirm 後 join() 性善説 fallback は撤去（別 userId が新 seat に同 color を取得できてしまい UI ラベルが嘘になる攻撃ベクトルを完全に閉じるため）。"
+    },
+    {
+      "screenId": "host",
+      "designFile": "サンレンタン_画面2_ホスト管理.dc.html",
+      "route": "/rooms/:id （ホスト席）",
+      "role": "host",
+      "state": "n/a",
+      "requiredTexts": [
+        "サンレンタン",
+        "ホスト",
+        "プレイヤーを招待",
+        "部屋",
+        "プレイヤーの累積順位",
+        "出題",
+        "正解",
+        "次のお題"
+      ],
+      "requiredRegions": [
+        "ホスト操作卓 アプリバー(ウォルナット+ホスト操作卓バッジ)",
+        "招待リンクカード（URL コピー1ボタン+『招待リンクを表示』展開トグルのみ。あいことば/コード入力は無し）",
+        "出題エディタ(お題+選択肢, 3つ以上)",
+        "プリセット呼び出し",
+        "正解選択(=締切トリガー)",
+        "公開後の進行(結果/次のお題)"
+      ],
+      "controls": [
+        { "label": "招待 URL コピー", "action": "部屋 URL をクリップボードへ（招待動線はこれ1本に収束）" },
+        { "label": "このお題で出題する / 選択肢を公開して予想スタート", "action": "poseRound で出題公開" },
+        { "label": "正解を公開して採点する / 🔒 正解を公開して締め切る", "action": "reveal で締切＆採点" },
+        { "label": "次のお題を出す", "action": "次レースの出題へ" },
+        { "label": "プリセット(使う)", "action": "プリセットを出題エディタへ読込" }
+      ],
+      "designStates": [
+        "①部屋作成", "②出題作成(新規)", "③プリセット", "④正解選択(締切トリガー)", "⑤公開後の進行"
+      ],
+      "designCopyExpected": [
+        "ホスト操作卓",
+        "選択肢（出走）",
+        "3着まで選ぶので最低3つ",
+        "選択肢を公開して予想スタート",
+        "公開後にあなたの1〜3着（正解）を選びます",
+        "あなたの1〜3着を選ぶと予想が締め切られ、答え合わせされます",
+        "🔒 正解を公開して締め切る",
+        "プリセット"
+      ],
+      "mustNotShow": [
+        "この目で馬券を買う(プレイヤーの予想提出はホスト席では出さない設計)",
+        "あなたの成立役(ホストは採点対象外)",
+        "あいことば/部屋コード '#XXXX' 表示（2026-06-24 撤去: URL 一本化）",
+        "コード横『コピー』ボタン（2026-06-24 撤去: 招待 URL コピー1ボタンのみ）"
+      ],
+      "implementationNote": "SanrentanPlay.tsx の isHost 分岐(InviteCard/HostReveal/HostPose)。アプリバーはウォルナット化されておらず汎用Shell(フェルト)。InviteCard は『招待 URL コピー』1ボタンに収束（2026-06-24 ユーザー判断: あいことばコンセプト撤去）。プリセット呼び出しUIは未実装または簡略。"
+    },
+    {
+      "screenId": "predict",
+      "designFile": "サンレンタン_画面3_予想受付.dc.html",
+      "route": "/rooms/:id （プレイヤー席・予想受付中）",
+      "role": "player",
+      "state": "open",
+      "requiredTexts": [
+        "予想受付中",
+        "BBQで肉以外に焼きたいのは？",
+        "1着",
+        "2着",
+        "3着",
+        "三連単 馬券",
+        "この目で馬券を買う",
+        "出走から 1着 → 2着 → 3着 を選ぶ"
+      ],
+      "requiredRegions": [
+        "アプリバー(サンレンタン)",
+        "お題バナー(第Nラウンド/予想受付中)",
+        "枠番カラーの選択肢リスト",
+        "三連単 馬券スリップ(1着→2着→3着)",
+        "購入CTA"
+      ],
+      "controls": [
+        { "label": "選択肢タップ", "action": "1→2→3着を順に割当(再タップで取消)" },
+        { "label": "この目で馬券を買う / 馬券を買う", "action": "predict で予想提出(3着揃い時のみ活性)" }
+      ],
+      "mustNotShow": [
+        "ホスト操作卓",
+        "正解を公開して締め切る",
+        "RACE RESULT(結果は revealed まで出さない)",
+        "的中(結果確定前にスタンプを出さない)"
+      ],
+      "designOptions": "デザインは A(マークシート)/B(ターフ表彰台)/C(スリップ常時) の3案。実装は A 系(選択肢リスト + 下部馬券スリップ)。",
+      "disabledStateCopy": "3着まで選んでください / 3着を選ぶと購入できます（3個未満は購入無効）",
+      "implementationNote": "SanrentanPlay.tsx の round.status==='open' 分岐(TriplePicker+BetSlip)。実装ボタン文言は『この目で馬券を買う』、未完成時『3着まで選んでください』。"
+    },
+    {
+      "screenId": "result",
+      "designFile": "サンレンタン_画面3_結果発表.dc.html",
+      "route": "/rooms/:id （プレイヤー席・結果確定）",
+      "role": "player",
+      "state": "revealed",
+      "requiredTexts": [
+        "あなたの成立役",
+        "あなたの馬券",
+        "サンレンタン",
+        "サンレンプク",
+        "ニレンタン",
+        "プクプク",
+        "タン",
+        "部屋の累積順位",
+        "点 払戻",
+        "ホストが次のお題"
+      ],
+      "requiredRegions": [
+        "正解表彰台(1着/2着/3着)",
+        "成立役バナー(役名+払戻点)",
+        "あなたの馬券(的中時スタンプ)",
+        "役早見/配当表(高い1つだけ成立)",
+        "部屋の累積順位(自分行ハイライト)"
+      ],
+      "controls": [
+        { "label": "次のレースを待つ / 待機中", "action": "次レースの出題を待機(プレイヤーは操作なし)" }
+      ],
+      "mustNotShow": [
+        "ホスト操作卓",
+        "次のお題を出す(ホスト操作)",
+        "この目で馬券を買う(締切後は提出不可)"
+      ],
+      "designOptions": "デザインは 1(払戻票式)/2(電光掲示板式) の2案。実装は払戻票系(表彰台+役バナー+馬券スタンプ+役早見+累積順位)。",
+      "scoringRule": "成立する役は最高位の1つだけ。例: 正解①→②→③ に馬券①→②→③ で『サンレンタン 6点』。",
+      "implementationNote": "SanrentanPlay.tsx の結果分岐(Podium/役バナー/役早見/Ranking)。myPts===6 で Confetti。"
+    },
+    {
+      "screenId": "projector",
+      "designFile": "サンレンタン_結果公開_画面共有.dc.html",
+      "route": "（未実装）共有ディスプレイ用 結果公開画面（例: /rooms/:id/share 等）",
+      "role": "shared",
+      "state": "revealed",
+      "requiredTexts": [
+        "画面共有中 ・ ホストの画面",
+        "— 正 解 発 表 —",
+        "結果確定",
+        "このレースの払戻",
+        "成立は最高位の役ひとつだけ",
+        "累積順位",
+        "レース勝者",
+        "次のレースはホストも予想に参加します",
+        "ホスト操作：次のお題を出す"
+      ],
+      "requiredRegions": [
+        "共有トップバー(画面共有中インジケータ)",
+        "大きな正解表彰台(金メダル+紙吹雪)",
+        "プレイヤー別払戻カードグリッド",
+        "累積順位リーダーボード(右カラム)",
+        "フッター(ホスト操作:次のお題を出す)"
+      ],
+      "controls": [
+        { "label": "ホスト操作：次のお題を出す", "action": "ホスト端末から次レースへ(共有画面は表示専用)" }
+      ],
+      "mustNotShow": [
+        "プレイヤー個別の予想入力UI(共有画面は閲覧専用・大画面)"
+      ],
+      "status": "NOT_IMPLEMENTED",
+      "implementationNote": "デスクトップ 1280×800 の共有ディスプレイ専用画面。現状リポジトリに対応ルート/コンポーネントが見当たらない。準拠テストは未実装画面として fail/skip 判定。"
+    }
+  ]
+}

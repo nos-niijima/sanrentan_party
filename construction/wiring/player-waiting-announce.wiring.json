@@ -1,0 +1,56 @@
+{
+  "screen": "player-waiting-announce",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/PredictScreen.tsx",
+  "note": "リビール演出 (B 案) 中のプレイヤー手元 frame。SanrentanPlay が round.status='revealed' && round.announce.phase !== 'done' のときに AnnounceWaitingScreen を render する。backend redactHostRevealFor が正解/役/点数を隠し、scores は前ラウンド時点に巻き戻すため、ここでは正解情報を一切表示しない (= defense-in-depth)。announce.phase='done' に server が遷移したら SanrentanPlay 側で通常 ResultScreen に切り替わる。",
+  "elements": [
+    {
+      "selector": "WaitingShell top bar link '‹' (戻る) + 'サンレンタン' brand",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "WaitingShell の固定 brand + 戻る link 文字 (link 自体は active、別 element として記載済み)"
+    },
+    {
+      "selector": "WaitingShell back link to /browse",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "プレイヤーが対戦から離脱して公開卓一覧へ戻る"
+    },
+    {
+      "selector": "卓名 '{roomName}' (top bar sub row, data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (fallback: literal '試遊卓')",
+      "alive": true,
+      "userTask": "プレイヤーがどの卓に参加しているか確認する"
+    },
+    {
+      "selector": "silhouette podium (data-testid=sr-announce-silhouette-podium) — 3 段の表彰台 + ? チップ",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホスト大画面で発表進行中であることを示すシルエット装飾。正解情報は表示しない (backend redact)。"
+    },
+    {
+      "selector": "heading '大画面で結果発表中' (data-testid=sr-announce-waiting-heading)",
+      "kind": "display",
+      "wiredTo": "client.round.announce.phase (= !== 'done' の間に表示)",
+      "alive": true,
+      "userTask": "プレイヤーが「いま自分の手元では結果を見ない」「ホスト大画面を見るべき」と理解する"
+    },
+    {
+      "selector": "sub text 'ホストの画面をご覧ください' (data-testid=sr-announce-waiting-sub)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "リビール演出中のガイダンス literal"
+    },
+    {
+      "selector": "RankingFooter (累積順位フッター, ホスト除く前ラウンド時点 scores)",
+      "kind": "display",
+      "wiredTo": "backend.state.scores (redact によりラウンド前にロールバック済) + RoomPlayer",
+      "alive": true,
+      "userTask": "プレイヤーが前ラウンドまでの累積順位を確認できる (今ラウンド分の加算は演出完了まで伏せる)"
+    }
+  ]
+}

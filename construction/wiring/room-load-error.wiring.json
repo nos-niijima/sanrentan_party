@@ -1,0 +1,27 @@
+{
+  "screen": "room-load-error",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/app/rooms/[id]/page.tsx",
+  "elements": [
+    {
+      "selector": "heading 'この卓は存在しません' or '卓を読み込めませんでした' (role=alert title)",
+      "kind": "display",
+      "wiredTo": "client.error.status (ApiError.status === 404 で文言分岐)",
+      "alive": true,
+      "userTask": "卓ロード失敗の理由 (404 = 不正招待リンク / それ以外 = 通信エラー) を把握する"
+    },
+    {
+      "selector": "text detail ('招待リンクが無効…' / '通信エラー…' + error.message)",
+      "kind": "display",
+      "wiredTo": "client.error.message (useRoom が返した Error の message)",
+      "alive": true,
+      "userTask": "エラー詳細(原因テキスト)を確認する"
+    },
+    {
+      "selector": "link '/browse に戻る' (next/link href=/browse)",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "公開卓一覧 /browse へ戻る"
+    }
+  ]
+}

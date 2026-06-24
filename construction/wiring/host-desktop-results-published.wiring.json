@@ -1,0 +1,62 @@
+{
+  "screen": "host-desktop-results-published",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "DesktopRail aside (data-testid=sr-host-desktop-rail)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "desktop chrome の左 rail コンテナ (postReveal phase)"
+    },
+    {
+      "selector": "DesktopRail 進行ステップ (step=4 current, step=1,2,3 done)",
+      "kind": "display",
+      "wiredTo": "client.desktopStep (showPostReveal → 4)",
+      "alive": true,
+      "userTask": "結果進行中であることを desktop rail で確認"
+    },
+    {
+      "selector": "DesktopAside 赤バッジ '大画面で発表中' (data-testid=sr-host-desktop-broadcast-badge)",
+      "kind": "display",
+      "wiredTo": "client.phase=postReveal (リビール演出連動の視覚記号)",
+      "alive": true,
+      "userTask": "現在大画面で結果発表中であることを confirm 視覚として確認する"
+    },
+    {
+      "selector": "DesktopAside button '次のお題を出す' (data-testid=sr-host-desktop-next-round)",
+      "kind": "button",
+      "wiredTo": "client.handleNextRound (setForceNew(true) → 出題エディタへ遷移)",
+      "alive": true,
+      "userTask": "desktop aside から次ラウンドの出題エディタへ進む"
+    },
+    {
+      "selector": "DesktopAside link '大画面に結果を再表示'",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share)",
+      "alive": true,
+      "userTask": "大画面のリビール演出を別タブで開いて再表示する"
+    },
+    {
+      "selector": "DesktopAside 注釈 'プレイヤーは手元で次の予想を待っています'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "phase=postReveal の静的注記 (プレイヤー視点の状況説明)"
+    },
+    {
+      "selector": "DesktopAside 補足 '大画面では1着から順に公開する演出を再生できます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "再表示 CTA に対する静的説明"
+    },
+    {
+      "selector": "中央 mobile shell HostPostReveal (完了バナー + ランキング)",
+      "kind": "display",
+      "wiredTo": "client.HostPostReveal (既存 mobile shell)",
+      "alive": true,
+      "userTask": "desktop でも mobile と同じランキング/完了バナーを中央列で表示する"
+    }
+  ]
+}

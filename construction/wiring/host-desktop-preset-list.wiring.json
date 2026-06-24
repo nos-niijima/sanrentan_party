@@ -1,0 +1,34 @@
+{
+  "screen": "host-desktop-preset-list",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "DesktopRail aside (data-testid=sr-host-desktop-rail, hidden lg:flex)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "desktop chrome の左 rail コンテナ。D② と同じ rail を D③ プリセットでも共通描画する (phase=pose)。"
+    },
+    {
+      "selector": "DesktopRail 進行ステップ (step=2 current)",
+      "kind": "display",
+      "wiredTo": "client.desktopStep (showPose → 2)",
+      "alive": true,
+      "userTask": "プリセット選択時も desktop rail で進行 step を確認"
+    },
+    {
+      "selector": "中央 mobile shell HostPose tab='preset' プリセット一覧",
+      "kind": "display",
+      "wiredTo": "backend.GameSpec.presets (view.presets)",
+      "alive": true,
+      "userTask": "desktop でも mobile と同じプリセット一覧を 430px 列で利用する"
+    },
+    {
+      "selector": "DesktopAside 参加者リスト (phase=pose)",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (rows)",
+      "alive": true,
+      "userTask": "プリセット閲覧中も参加者を常時把握できる"
+    }
+  ]
+}

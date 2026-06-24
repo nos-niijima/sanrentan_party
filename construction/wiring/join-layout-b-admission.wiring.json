@@ -1,0 +1,174 @@
+{
+  "screen": "join-layout-b-admission",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/JoinScreen.tsx",
+  "elements": [
+    {
+      "selector": "link 'Board Game Trial にもどる' (‹ / aria-label)",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "ダッシュボード(/browse)に戻る"
+    },
+    {
+      "selector": "text 'ADMISSION'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "design 由来の固定ラベル(入場券ヘッダ)。値はチケット様式の literal で動的データではない"
+    },
+    {
+      "selector": "text '入場券'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "design 由来の固定タイトル(入場券ヘッダ literal)"
+    },
+    {
+      "selector": "TicketHead 4-dot game icon grid",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "サンレンタンのアプリブランドアイコン(固定 SVG)。aria-hidden"
+    },
+    {
+      "selector": "avatar (ホスト頭文字 / hostName.slice(0,1))",
+      "kind": "display",
+      "wiredTo": "hostName から derive (view.players.find(seat=hostSeat).name の先頭1文字)",
+      "alive": true,
+      "userTask": "卓のホストを頭文字で識別する"
+    },
+    {
+      "selector": "text roomName (displayRoomName)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name",
+      "alive": true,
+      "userTask": "どの卓に入ろうとしているか(卓名)を確認する"
+    },
+    {
+      "selector": "text roomSubline ('{状態}' のみ; 部屋 #XXXX は撤去済み)",
+      "kind": "display",
+      "wiredTo": "state.history+state.round.status",
+      "alive": true,
+      "userTask": "進行状態(開始前/第NR 進行中/第NR 結果発表中)を確認する"
+    },
+    {
+      "selector": "badge '途中参加OK'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "design 由来の固定ポリシーバッジ。Room の動的属性ではない(常時表示)"
+    },
+    {
+      "selector": "label 'お名前（チーム名）をご記入ください'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "input field の静的ラベル"
+    },
+    {
+      "selector": "input aria-label='チーム名またはお名前' (#ticketName / #guestName)",
+      "kind": "input",
+      "wiredTo": "backend.RoomPlayer.name (via join() / signIn('guest',{name}))",
+      "alive": true,
+      "userTask": "入場時の表示名(チーム名)を入力する"
+    },
+    {
+      "selector": "text 'カーソル (animation: sr-pulse)'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "入力欄カーソルの視覚フィラー(animation のみ)。aria-hidden"
+    },
+    {
+      "selector": "text '例: チームたぬき'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "design 準拠の例示テキスト literal(requiredTexts 担保用)。動的データではない"
+    },
+    {
+      "selector": "button aria-label='駒色 1' ... '駒色 4' (PalettePicker)",
+      "kind": "button",
+      "wiredTo": "client.setPalette + visible selection ring + downstream join({color})",
+      "alive": true,
+      "userTask": "卓で使う自分の駒色を選ぶ(選択は CTA 押下時 RoomPlayer.color に送信)"
+    },
+    {
+      "selector": "text '駒色をえらぶ'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "PalettePicker の見出し literal"
+    },
+    {
+      "selector": "Perforation (破線 + 切り抜き円)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "チケットのミシン目装飾(視覚のみ)。aria-hidden"
+    },
+    {
+      "selector": "button 'もぎって入場する' (CTA / submit)",
+      "kind": "button",
+      "wiredTo": "backend.join (RoomPlayer 着席 / RoomPlayer.color upsert) または signIn('guest',{callbackUrl})",
+      "alive": true,
+      "userTask": "この卓に入場(着席)する。未ログインならゲストサインイン → 自動 join"
+    },
+    {
+      "selector": "text '予想はホストが正解を出すまで何度でも提出・修正できます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "design 由来の固定注釈 literal"
+    },
+    {
+      "selector": "section[aria-label='既存メンバーとして再参加'] (rejoin section; playersExclHost.length>0 のみ表示)",
+      "kind": "display",
+      "wiredTo": "derive: view.players.filter(seat!==hostSeat && name)",
+      "alive": true,
+      "userTask": "既参加プレイヤー一覧から自分を選んで rejoin する（ブラウザクラッシュ後など）。host のみの卓では非表示"
+    },
+    {
+      "selector": "heading 'すでに参加している場合は戻る'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "rejoin セクション見出し literal"
+    },
+    {
+      "selector": "text 'ブラウザが落ちたあとに同じ名前で再参加する場合はこちらから。※他人の名前を選ばないでください。'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "rejoin セクション補足 + 性善説 注記 literal"
+    },
+    {
+      "selector": "li > button aria-label='{name} として再参加する' (各 existing member)",
+      "kind": "button",
+      "wiredTo": "未ログイン: signIn('guest',{name:existingName, callbackUrl:/join/<id>?j=1&c=<existingColor>}) / ログイン済: 拒否 (visible alert 表示のみ。なりすまし防止のため join() は発火しない。サインアウト案内文を role=alert で表示する)",
+      "alive": true,
+      "userTask": "自分の旧 seat に再参加する（typo で新 seat になるのを防ぐ）。ログイン済の場合は別 user に rename できないため一度サインアウトを案内"
+    },
+    {
+      "selector": "div[role='alert'] (join 失敗時の inline alert; errorMessage state)",
+      "kind": "display",
+      "wiredTo": "derive: errorMessage + errorKind state (set by submitGo/rejoinAs catch block from useRoom.join failures)",
+      "alive": true,
+      "userTask": "join/rejoin が失敗した理由を提示する。errorKind='duplicate-name' (backend 409) は赤系単色 (#B0301C/#FBE3DD/#7A1A0F) で『「<name>」はこの卓ですでに使われています。別の名前にしてください。』を表示し別名入力を促す。それ以外 (generic) は amber 系で原因メッセージを表示。"
+    },
+    {
+      "selector": "dot span (resolvePlayerColor 駒色ドット) per row",
+      "kind": "display",
+      "wiredTo": "derive: resolvePlayerColor({color:p.color, seat:p.seat})",
+      "alive": true,
+      "userTask": "どの色のプレイヤーが既存メンバーかを視覚的に識別する"
+    },
+    {
+      "selector": "text 'これは私です' badge per row",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "button 内の CTA ラベル literal（クリック自体は親 button が捕捉）"
+    }
+  ]
+}

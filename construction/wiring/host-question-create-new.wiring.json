@@ -1,0 +1,202 @@
+{
+  "screen": "host-question-create-new",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar heading '第NR の出題'",
+      "kind": "display",
+      "wiredTo": "client.barTitle (history.length+1 から derive)",
+      "alive": true,
+      "userTask": "現在編集中のラウンド番号を確認する"
+    },
+    {
+      "selector": "badge 'ホスト操作卓'",
+      "kind": "display",
+      "wiredTo": "client.isHost",
+      "alive": true,
+      "userTask": "自分がホストであることを確認する"
+    },
+    {
+      "selector": "WalnutBar 卓名行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "対戦中の自端末で卓名を控えめに確認する"
+    },
+    {
+      "selector": "InviteCard collapsed bar 'あいことば #XXXX'",
+      "kind": "display",
+      "wiredTo": "backend.Room.id",
+      "alive": true,
+      "userTask": "折りたたみ状態でも部屋コードを確認できる"
+    },
+    {
+      "selector": "InviteCard collapsed bar '{others}人 参加中'",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (rows.length)",
+      "alive": true,
+      "userTask": "現在の参加者数を確認する"
+    },
+    {
+      "selector": "InviteCard collapsed bar button 'コピー' (aria-label='部屋コードのリンクをコピー')",
+      "kind": "button",
+      "wiredTo": "clipboard.link + visible 'コピー済 ✓'",
+      "alive": true,
+      "userTask": "招待リンクをクリップボードへコピーする"
+    },
+    {
+      "selector": "InviteCard collapsed bar link '共有画面'",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share)",
+      "alive": true,
+      "userTask": "共有画面(プロジェクタ用)を別タブで開く"
+    },
+    {
+      "selector": "InviteCard collapsed bar button '招待リンクを表示 ▾'",
+      "kind": "toggle",
+      "wiredTo": "client.setExpanded(true) + aria-expanded 切替 + パネル展開",
+      "alive": true,
+      "userTask": "招待カードを展開して詳細を表示する"
+    },
+    {
+      "selector": "tablist 'role=tablist aria-label=出題ソース'",
+      "kind": "nav",
+      "wiredTo": "client.setTab + ARIA tab semantics + ArrowLeft/Right/Home/End",
+      "alive": true,
+      "userTask": "新規作成 ↔ プリセット の切替"
+    },
+    {
+      "selector": "tab '新規作成' (aria-selected=true)",
+      "kind": "toggle",
+      "wiredTo": "client.setTab('new')",
+      "alive": true,
+      "userTask": "新規作成タブをアクティブにする"
+    },
+    {
+      "selector": "tab 'プリセット'",
+      "kind": "toggle",
+      "wiredTo": "client.setTab('preset')",
+      "alive": true,
+      "userTask": "プリセットタブへ切替"
+    },
+    {
+      "selector": "label 'お題'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "field の静的ラベル"
+    },
+    {
+      "selector": "input[type='text'] role='textbox' aria-label='お題' id='host-prompt'",
+      "kind": "input",
+      "wiredTo": "backend.act('poseRound', {prompt}) + onFocus: if value===SAMPLE_PROMPT then input.select() で全選択",
+      "alive": true,
+      "userTask": "ラウンドのお題文を入力する(初期値=サンプル, フォーカス時に初期値のままなら全選択して一発上書き可)"
+    },
+    {
+      "selector": "label '選択肢（出走）'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "選択肢ヘッダの静的ラベル"
+    },
+    {
+      "selector": "counter '{validChoices.length}つ'",
+      "kind": "display",
+      "wiredTo": "client.choices.filter(valid).length",
+      "alive": true,
+      "userTask": "現在の有効選択肢数を確認する"
+    },
+    {
+      "selector": "hint '3着まで選ぶので最低3つ'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "選択肢ヘッダ右の静的ヒント"
+    },
+    {
+      "selector": "drag handle (3 lines)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "DnD 未実装 (装飾のみ)。並べ替えは未対応 (aria-hidden, click/drag いずれもハンドラ無し)"
+    },
+    {
+      "selector": "枠番チップ (1..6 の色付き番号)",
+      "kind": "display",
+      "wiredTo": "client.GATES[idx % len] (順序由来)",
+      "alive": true,
+      "userTask": "各選択肢の枠番(色)を視認する"
+    },
+    {
+      "selector": "input aria-label='選択肢{n}'",
+      "kind": "input",
+      "wiredTo": "client.updateChoice → backend.act('poseRound', {choices}) + onFocus: if value===SAMPLE_CHOICES[idx] then input.select() (即時+rAF) で全選択",
+      "alive": true,
+      "userTask": "選択肢テキストを入力/編集する(初期サンプル値のままならフォーカス時に全選択して一発上書き可)"
+    },
+    {
+      "selector": "button aria-label='選択肢{n}を削除' (× ボタン, choices.length>3 のみ表示)",
+      "kind": "button",
+      "wiredTo": "client.removeChoice + 再描画",
+      "alive": true,
+      "userTask": "余分な選択肢を削除する"
+    },
+    {
+      "selector": "button '＋ 選択肢を追加'",
+      "kind": "button",
+      "wiredTo": "client.addChoice + 再描画",
+      "alive": true,
+      "userTask": "選択肢を追加する"
+    },
+    {
+      "selector": "error message (err state)",
+      "kind": "display",
+      "wiredTo": "client.err (poseRound 失敗時の API error)",
+      "alive": true,
+      "userTask": "出題失敗時のエラー文言を確認する"
+    },
+    {
+      "selector": "button CTA (sticky bottom: '出題する'(1x) / '×N倍で出題する'(N>1) / '出題中…'(busy))",
+      "kind": "button",
+      "wiredTo": "backend.act('poseRound', {prompt, choices, multiplier})",
+      "alive": true,
+      "userTask": "編集中のお題と倍率を確定して全プレイヤーに公開する"
+    },
+    {
+      "selector": "hint '公開後にあなたの1〜3着（正解）を選びます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "CTA 下の静的説明 literal"
+    },
+    {
+      "selector": "group role=group aria-label='この設問の重み' (data-testid=sr-multiplier-selector)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "倍率セレクタの見出し/ラベル(='この設問の重み' + '倍率' badge)。client state はチップ側で扱う。"
+    },
+    {
+      "selector": "chip role=radio aria-label='倍率 Nx' (data-testid=sr-multiplier-chip-{N}, N∈{1,2,3,5,10})",
+      "kind": "toggle",
+      "wiredTo": "client.setMultiplier(N) + 視覚 (赤背景/淡背景) 切替。送信時 backend.act('poseRound').payload.multiplier に同梱。",
+      "alive": true,
+      "userTask": "この設問の得点倍率 (1/2/3/5/10) を選択する (初期 1x, 出題ごとに 1x へリセット)"
+    },
+    {
+      "selector": "explainer '正解時の払戻が N倍 で計算されます。例: サンレンタン 6点 → {6*N}点'",
+      "kind": "display",
+      "wiredTo": "client.multiplier (動的: N と 6*N が選択値に追従)",
+      "alive": true,
+      "userTask": "選択した倍率が払戻にどう効くかを数値例で確認する"
+    },
+    {
+      "selector": "note '📣 倍率は出題と同時にプレイヤーへ表示されます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "倍率セレクタ下の静的注記 literal (公開情報であることの説明)"
+    }
+  ]
+}

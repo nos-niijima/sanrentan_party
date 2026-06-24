@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:#c5b79c;border-radius:8px}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:'Noto Sans JP',sans-serif">
+
+  <div style="max-width:1180px;margin-bottom:30px">
+    <div style="display:flex;align-items:baseline;gap:13px;flex-wrap:wrap">
+      <h1 style="margin:0;font:700 27px/1.1 'Zilla Slab',serif;color:#2E2A24">サンレンタン — 画面2「ホスト管理」</h1>
+      <span style="font:500 14px/1 'Noto Serif JP';color:#6B4F3A">部屋と進行を司る操作卓 / 5つの状態</span>
+    </div>
+    <p style="margin:11px 0 0;max-width:860px;font:400 13.5px/1.8 'Noto Sans JP';color:#5a5347">
+      プレイヤーと触り心地を分けるため、アプリバーを<b>ウォルナット（木）の「ホスト操作卓」</b>に。①部屋作成 → ②出題作成 → ③プリセット呼び出し → ④正解選択（＝予想締切＆答え合わせのトリガー）→ ⑤公開後の進行、と状態が遷移します。
+    </p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- デスクトップ：ホスト操作卓                                              -->
+  <!-- ===================================================================== -->
+  <div style="max-width:1180px;margin:0 0 14px">
+    <div style="display:flex;align-items:baseline;gap:11px;flex-wrap:wrap">
+      <h2 style="margin:0;font:700 20px/1.1 'Zilla Slab',serif;color:#2E2A24">デスクトップ ・ ホスト操作卓</h2>
+      <span style="font:500 13px 'Noto Serif JP';color:#6B4F3A">大画面を共有しながら手元PCで進行する想定 / 1280×800</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start;margin-bottom:54px">
+
+    <!-- ===== D1 : 部屋作成 ===== -->
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">① 卓をひらく</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="ホスト卓PC / 部屋作成" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <div style="flex:none;display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px"><div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div><span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span></div>
+            <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:6px 11px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px"><span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span><span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span></div>
+          </div>
+
+          <div style="flex:1;display:flex;min-height:0">
+            <!-- left rail -->
+            <div style="flex:none;width:248px;background:#EFE3CC;border-right:1px solid #DCC9A6;display:flex;flex-direction:column;padding:18px 16px">
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 12px;margin-bottom:18px">
+                <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#6B4F3A;color:#F4E7CF;display:flex;align-items:center;justify-content:center;font:700 18px 'Noto Serif JP'">た</div>
+                <div style="line-height:1.3"><div style="font:700 14px 'Noto Serif JP';color:#2E2A24">たけの試遊卓</div><span style="font:600 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.08em">#4F2A</span></div>
+              </div>
+              <span style="font:700 10px 'Noto Sans JP';color:#8A7A60;letter-spacing:.1em;margin-bottom:9px">進行ステップ</span>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#6B4F3A;box-shadow:0 1px 0 #5A4226"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F4E7CF;color:#6B4F3A;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">1</span><span style="font:700 13px 'Noto Sans JP';color:#FFF7EA">卓をひらく</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">2</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">お題を出す</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">3</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">正解を記入</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">4</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">結果を進行</span></div>
+              </div>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:8px;padding:11px 12px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px"><span style="width:8px;height:8px;border-radius:50%;background:#C0AE8C"></span><span style="font:600 12px 'Noto Sans JP';color:#8A7A60">まだ参加者なし</span></div>
+            </div>
+
+            <!-- center -->
+            <div style="flex:1;display:flex;flex-direction:column;padding:34px 44px;min-width:0">
+              <h2 style="margin:0 0 4px;font:700 26px 'Noto Serif JP';color:#2E2A24">新しい卓をひらく</h2>
+              <p style="margin:0 0 26px;font:500 13px 'Noto Sans JP';color:#8A7A60">あなたがこのレースのホスト（出題・進行役）です</p>
+              <div style="display:flex;gap:18px;margin-bottom:20px">
+                <div style="flex:1.4"><span style="display:block;font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">卓の名前</span><div style="display:flex;align-items:center;background:#FFFDF7;border:2px solid #C56A2C;border-radius:11px;padding:14px 15px;box-shadow:0 2px 5px rgba(70,50,30,.07)"><span style="font:600 17px 'Noto Sans JP';color:#2E2A24">たけの試遊卓</span><span style="width:2px;height:21px;background:#C56A2C;margin-left:2px"></span></div></div>
+                <div style="flex:1"><span style="display:block;font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">あいことば（部屋コード）</span><div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:13px 15px"><span style="font:900 24px 'Zilla Slab';letter-spacing:.16em;color:#6B4F3A">#4F2A</span><span style="margin-left:auto;font:700 12px 'Noto Sans JP';color:#C56A2C;background:#FBEFD9;border:1px solid #ECCfa0;padding:9px 14px;border-radius:9px">コピー</span></div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:15px 16px"><div style="line-height:1.3"><div style="font:700 14px 'Noto Sans JP';color:#2E2A24">リンクを知っている人が参加</div><span style="font:500 11px 'Noto Sans JP';color:#8A7A60">途中参加もいつでもOK</span></div><div style="margin-left:auto;width:48px;height:28px;border-radius:999px;background:#3E8E52;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)"><div style="position:absolute;top:2.5px;right:2.5px;width:23px;height:23px;border-radius:50%;background:#FBF6EA;box-shadow:0 1px 2px rgba(0,0,0,.3)"></div></div></div>
+            </div>
+
+            <!-- right -->
+            <div style="flex:none;width:300px;background:#FBF6EA;border-left:1px solid #E3D4B8;display:flex;flex-direction:column;padding:22px 20px">
+              <span style="font:700 13px 'Noto Serif JP';color:#2E2A24;margin-bottom:14px">参加者</span>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;flex:1;text-align:center;border:1.5px dashed #D8C6A4;border-radius:13px;padding:24px">
+                <div style="width:54px;height:54px;border-radius:50%;background:#EFE2C6;display:flex;align-items:center;justify-content:center;font:700 24px 'Noto Sans JP';color:#C0AE8C">＋</div>
+                <div style="line-height:1.5"><div style="font:700 13px 'Noto Sans JP';color:#6B4F3A">参加を待っています</div><span style="font:500 11px 'Noto Sans JP';color:#8A7A60">あいことばを共有しましょう</span></div>
+                <div style="font:900 26px 'Zilla Slab';letter-spacing:.16em;color:#C56A2C;background:#FBEFD9;border:1px solid #ECCfa0;padding:8px 16px;border-radius:10px">#4F2A</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;gap:14px;padding:14px 24px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <button style="font:700 13px 'Noto Sans JP';color:#6B4F3A;background:#FBF6EA;border:1.5px solid #D8C6A4;padding:13px 20px;border-radius:11px">プリセットを用意して始める</button>
+            <button style="margin-left:auto;font:900 16px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#E0A24E,#C56A2C);padding:14px 32px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 4px 10px rgba(0,0,0,.2)">この卓をひらく</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D2 : 出題作成 ===== -->
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">② お題と選択肢をつくる（倍率も設定）</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="ホスト卓PC / 出題作成" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <div style="flex:none;display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px"><div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div><span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span></div>
+            <span style="font:700 13px 'Noto Serif JP';color:#F4E7CF">第3R の出題</span>
+            <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:6px 11px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px"><span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span><span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span></div>
+          </div>
+
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="flex:none;width:248px;background:#EFE3CC;border-right:1px solid #DCC9A6;display:flex;flex-direction:column;padding:18px 16px">
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 12px;margin-bottom:18px"><div style="flex:none;width:38px;height:38px;border-radius:10px;background:#6B4F3A;color:#F4E7CF;display:flex;align-items:center;justify-content:center;font:700 18px 'Noto Serif JP'">た</div><div style="line-height:1.3"><div style="font:700 14px 'Noto Serif JP';color:#2E2A24">たけの試遊卓</div><span style="font:600 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.08em">#4F2A</span></div></div>
+              <span style="font:700 10px 'Noto Sans JP';color:#8A7A60;letter-spacing:.1em;margin-bottom:9px">進行ステップ</span>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">卓をひらく</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#6B4F3A;box-shadow:0 1px 0 #5A4226"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F4E7CF;color:#6B4F3A;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">2</span><span style="font:700 13px 'Noto Sans JP';color:#FFF7EA">お題を出す</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">3</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">正解を記入</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">4</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">結果を進行</span></div>
+              </div>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:8px;padding:11px 12px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px"><span style="width:8px;height:8px;border-radius:50%;background:#3E8E52"></span><span style="font:600 12px 'Noto Sans JP';color:#6B4F3A">5人 参加中</span></div>
+            </div>
+
+            <div style="flex:1;display:flex;flex-direction:column;padding:24px 34px 0;min-width:0">
+              <div style="display:flex;gap:8px;margin-bottom:16px"><div style="font:700 13px 'Noto Sans JP';color:#FFF7EA;background:#6B4F3A;padding:9px 18px;border-radius:9px">新規作成</div><div style="font:600 13px 'Noto Sans JP';color:#8A7A60;background:#FBF6EA;border:1px solid #E0CFAD;padding:9px 18px;border-radius:9px">プリセット</div></div>
+              <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">お題</span>
+              <div style="background:#FFFDF7;border:2px solid #C56A2C;border-radius:11px;padding:14px 15px;margin-bottom:16px;box-shadow:0 2px 5px rgba(70,50,30,.07)"><span style="font:600 17px 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</span><span style="width:2px;height:20px;background:#C56A2C;display:inline-block;vertical-align:middle;margin-left:2px"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1.5px solid #E0CFAD;border-radius:11px;padding:11px 14px;margin-bottom:16px">
+                <span style="font:700 12px 'Noto Sans JP';color:#2E2A24">この設問の重み</span>
+                <div style="display:flex;gap:6px;margin-left:6px">
+                  <sc-for list="{{ multipliers }}" as="m" hint-placeholder-count="5"><div style="text-align:center;padding:7px 13px;border-radius:8px;background:{{ m.bg }};border:2px solid {{ m.bd }}"><span style="font:900 15px 'Zilla Slab';color:{{ m.fg }}">{{ m.label }}</span></div></sc-for>
+                </div>
+                <span style="margin-left:auto;font:500 11px 'Noto Sans JP';color:#8A7A60">正解時の払戻 ×2倍</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px"><span style="font:700 12px 'Noto Sans JP';color:#2E2A24">選択肢（出走）</span><span style="font:600 11px 'Noto Sans JP';color:#3E8E52">6つ</span><span style="margin-left:auto;font:500 11px 'Noto Sans JP';color:#8A7A60">3着まで選ぶので最低3つ</span></div>
+              <div style="flex:1;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:9px;align-content:start">
+                <sc-for list="{{ choices }}" as="g" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px;padding:9px 12px"><div style="display:flex;flex-direction:column;gap:2px;opacity:.5"><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div></div><div style="flex:none;width:32px;height:32px;border-radius:7px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 16px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div><span style="font:600 14px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span><span style="margin-left:auto;font:700 16px 'Noto Sans JP';color:#C0AE8C">×</span></div></sc-for>
+              </div>
+            </div>
+
+            <div style="flex:none;width:300px;background:#FBF6EA;border-left:1px solid #E3D4B8;display:flex;flex-direction:column;padding:22px 20px">
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px"><span style="font:700 13px 'Noto Serif JP';color:#2E2A24">参加者</span><span style="font:600 11px 'Noto Sans JP';color:#8A7A60">5人</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ participants }}" as="p" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:11px;background:#FFFDF7;border:1px solid #E3D4B8;border-radius:10px;padding:9px 11px"><div style="flex:none;width:30px;height:30px;border-radius:50%;background:{{ p.color }};display:flex;align-items:center;justify-content:center;font:700 13px 'Noto Sans JP';color:#fff">{{ p.initial }}</div><span style="font:600 13px 'Noto Sans JP';color:#2E2A24">{{ p.name }}</span><span style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#3E8E52"></span></div></sc-for>
+              </div>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:8px;padding:11px 12px;background:#FBEFD9;border:1px solid #ECCfa0;border-radius:10px"><span style="font:700 13px 'Noto Sans JP';color:#C56A2C">♘</span><span style="font:600 11px/1.5 'Noto Sans JP';color:#6B4F3A">公開後にあなたの正解を記入します</span></div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;gap:14px;padding:14px 24px;background:#FBF6EA;border-top:1px solid #E3D4B8"><span style="font:500 12px 'Noto Sans JP';color:#8A7A60">公開すると全員の端末で予想受付が始まります</span><button style="margin-left:auto;font:900 16px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#E0A24E,#C56A2C);padding:14px 30px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 4px 10px rgba(0,0,0,.2)">×2倍で公開して予想スタート</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D3 : プリセット ===== -->
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">②’ プリセットから呼び出す</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="ホスト卓PC / プリセット" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <div style="flex:none;display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px"><div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div><span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span></div>
+            <span style="font:700 13px 'Noto Serif JP';color:#F4E7CF">第3R の出題</span>
+            <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:6px 11px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px"><span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span><span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span></div>
+          </div>
+
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="flex:none;width:248px;background:#EFE3CC;border-right:1px solid #DCC9A6;display:flex;flex-direction:column;padding:18px 16px">
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 12px;margin-bottom:18px"><div style="flex:none;width:38px;height:38px;border-radius:10px;background:#6B4F3A;color:#F4E7CF;display:flex;align-items:center;justify-content:center;font:700 18px 'Noto Serif JP'">た</div><div style="line-height:1.3"><div style="font:700 14px 'Noto Serif JP';color:#2E2A24">たけの試遊卓</div><span style="font:600 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.08em">#4F2A</span></div></div>
+              <span style="font:700 10px 'Noto Sans JP';color:#8A7A60;letter-spacing:.1em;margin-bottom:9px">進行ステップ</span>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">卓をひらく</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#6B4F3A;box-shadow:0 1px 0 #5A4226"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F4E7CF;color:#6B4F3A;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">2</span><span style="font:700 13px 'Noto Sans JP';color:#FFF7EA">お題を出す</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">3</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">正解を記入</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">4</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">結果を進行</span></div>
+              </div>
+            </div>
+
+            <div style="flex:1;display:flex;flex-direction:column;padding:24px 34px 0;min-width:0">
+              <div style="display:flex;gap:8px;margin-bottom:16px"><div style="font:600 13px 'Noto Sans JP';color:#8A7A60;background:#FBF6EA;border:1px solid #E0CFAD;padding:9px 18px;border-radius:9px">新規作成</div><div style="font:700 13px 'Noto Sans JP';color:#FFF7EA;background:#6B4F3A;padding:9px 18px;border-radius:9px">プリセット</div></div>
+              <div style="display:flex;align-items:center;background:#FBF6EA;border:1px solid #E0CFAD;border-radius:10px;padding:11px 14px;gap:10px;margin-bottom:16px"><div style="width:13px;height:13px;border:2px solid #A89472;border-radius:50%;position:relative"><div style="position:absolute;width:6px;height:2px;background:#A89472;transform:rotate(45deg);right:-5px;bottom:0"></div></div><span style="font:400 13px 'Noto Sans JP';color:#A89472">登録した出題をさがす</span></div>
+              <div style="flex:1;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:11px;align-content:start">
+                <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4"><div style="background:#FBF6EA;border:1px solid #E3D4B8;border-radius:12px;padding:14px 15px;box-shadow:0 2px 4px rgba(70,50,30,.07)"><div style="display:flex;align-items:flex-start;gap:10px"><div style="flex:1"><h3 style="margin:0 0 8px;font:600 15px/1.4 'Noto Serif JP';color:#2E2A24">{{ p.title }}</h3><div style="display:flex;gap:5px;flex-wrap:wrap"><sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="3"><span style="font:600 10px 'Noto Sans JP';color:#fff;background:{{ c.bg }};border:1.5px solid {{ c.bd }};padding:4px 8px;border-radius:6px">{{ c.t }}</span></sc-for><span style="font:600 10px 'Noto Sans JP';color:#8A7A60;background:#EFE2C6;padding:4px 8px;border-radius:6px">＋{{ p.more }}</span></div></div><button style="flex:none;align-self:center;font:700 12px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#8A6A47,#6B4F3A);padding:9px 16px;border:none;border-radius:8px;box-shadow:0 1px 0 #5A412E">使う</button></div></div></sc-for>
+              </div>
+            </div>
+
+            <div style="flex:none;width:300px;background:#FBF6EA;border-left:1px solid #E3D4B8;display:flex;flex-direction:column;padding:22px 20px">
+              <span style="font:700 13px 'Noto Serif JP';color:#2E2A24;margin-bottom:14px">プリセットの使い方</span>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <div style="display:flex;gap:10px"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#6B4F3A;color:#F4E7CF;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">1</span><span style="font:600 12px/1.5 'Noto Sans JP';color:#5a5347">「使う」で出題エディタに読み込み</span></div>
+                <div style="display:flex;gap:10px"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#6B4F3A;color:#F4E7CF;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">2</span><span style="font:600 12px/1.5 'Noto Sans JP';color:#5a5347">必要なら選択肢や倍率を調整</span></div>
+                <div style="display:flex;gap:10px"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#6B4F3A;color:#F4E7CF;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">3</span><span style="font:600 12px/1.5 'Noto Sans JP';color:#5a5347">公開して予想スタート</span></div>
+              </div>
+              <div style="margin-top:auto;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px dashed #C8A27C;border-radius:11px;padding:13px;color:#6B4F3A"><span style="font:700 16px 'Noto Sans JP'">＋</span><span style="font:700 13px 'Noto Sans JP'">新規登録</span></div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;padding:14px 24px;background:#FBF6EA;border-top:1px solid #E3D4B8"><span style="font:500 12px 'Noto Sans JP';color:#8A7A60">「使う」を押すと出題エディタに読み込まれ、公開できます</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D4 : 正解選択 ===== -->
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">③ 正解（自分の1〜3着）を選ぶ＝締切トリガー</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="ホスト卓PC / 正解選択" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <div style="flex:none;display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px"><div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div><span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span></div>
+            <span style="font:700 13px 'Noto Serif JP';color:#F4E7CF">第3R 正解を記入</span>
+            <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:6px 11px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px"><span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span><span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span></div>
+          </div>
+
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="flex:none;width:248px;background:#EFE3CC;border-right:1px solid #DCC9A6;display:flex;flex-direction:column;padding:18px 16px">
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 12px;margin-bottom:18px"><div style="flex:none;width:38px;height:38px;border-radius:10px;background:#6B4F3A;color:#F4E7CF;display:flex;align-items:center;justify-content:center;font:700 18px 'Noto Serif JP'">た</div><div style="line-height:1.3"><div style="font:700 14px 'Noto Serif JP';color:#2E2A24">たけの試遊卓</div><span style="font:600 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.08em">#4F2A</span></div></div>
+              <span style="font:700 10px 'Noto Sans JP';color:#8A7A60;letter-spacing:.1em;margin-bottom:9px">進行ステップ</span>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">卓をひらく</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">お題を出す</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#6B4F3A;box-shadow:0 1px 0 #5A4226"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F4E7CF;color:#6B4F3A;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">3</span><span style="font:700 13px 'Noto Sans JP';color:#FFF7EA">正解を記入</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#E0CFAD;color:#8A7A60;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">4</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">結果を進行</span></div>
+              </div>
+              <div style="margin-top:auto;padding:11px 12px;background:#FBEFD9;border:1px solid #ECCfa0;border-radius:10px"><span style="font:600 11px/1.5 'Noto Sans JP';color:#6B4F3A">記入＝予想締切。締切後は変更できません。</span></div>
+            </div>
+
+            <div style="flex:1;display:flex;flex-direction:column;padding:24px 34px 0;min-width:0">
+              <div style="background:#3E6F52;border-radius:11px;padding:13px 16px;margin-bottom:16px"><span style="font:700 16px 'Noto Serif JP';color:#FBF6EA">BBQで肉以外に焼きたいのは？</span><span style="margin-left:10px;font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C8392F;padding:4px 9px;border-radius:999px">×2倍</span></div>
+              <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:9px">出走から1着・2着・3着を選ぶ</span>
+              <div style="flex:1;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:9px;align-content:start">
+                <sc-for list="{{ truthPick }}" as="g" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:11px;background:#FBF6EA;border:1.5px solid {{ g.rowBd }};border-radius:11px;padding:10px 13px;box-shadow:0 2px 4px rgba(70,50,30,.06)"><div style="flex:none;width:36px;height:36px;border-radius:8px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 18px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div><span style="font:600 15px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span><span style="margin-left:auto;font:700 13px 'Noto Sans JP';color:{{ g.badgeFg }};background:{{ g.badgeBg }};border:1.5px solid {{ g.badgeBd }};padding:6px 13px;border-radius:999px">{{ g.badge }}</span></div></sc-for>
+              </div>
+              <div style="flex:none;display:flex;align-items:center;gap:12px;padding:14px 2px"><span style="font:700 12px 'Noto Sans JP';color:#8A7A60">あなたの本命（正解）</span><span style="font:900 20px 'Zilla Slab';color:#2E2A24">C → A → E</span></div>
+            </div>
+
+            <div style="flex:none;width:300px;background:#FBF6EA;border-left:1px solid #E3D4B8;display:flex;flex-direction:column;padding:22px 20px">
+              <span style="font:700 13px 'Noto Serif JP';color:#2E2A24;margin-bottom:12px">提出状況</span>
+              <div style="display:flex;align-items:center;gap:8px;background:#E3EFE3;border:1px solid #BFD8C2;border-radius:10px;padding:10px 12px;margin-bottom:14px"><span style="font:900 18px 'Zilla Slab';color:#2C6E3E">4</span><span style="font:600 11px 'Noto Sans JP';color:#2C6E3E">提出済み</span><span style="font:500 11px 'Noto Sans JP';color:#8A7A60">／ 1人 未提出</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ participants }}" as="p" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:11px;background:#FFFDF7;border:1px solid #E3D4B8;border-radius:10px;padding:9px 11px"><div style="flex:none;width:30px;height:30px;border-radius:50%;background:{{ p.color }};display:flex;align-items:center;justify-content:center;font:700 13px 'Noto Sans JP';color:#fff">{{ p.initial }}</div><span style="font:600 13px 'Noto Sans JP';color:#2E2A24">{{ p.name }}</span><span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:{{ p.statusFg }};background:{{ p.statusBg }};border:1px solid {{ p.statusBd }};padding:4px 8px;border-radius:999px">{{ p.statusText }}</span></div></sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;gap:14px;padding:14px 24px;background:#FBF6EA;border-top:1px solid #E3D4B8"><span style="font:500 12px 'Noto Sans JP';color:#8A7A60">公開すると予想が締め切られ、答え合わせされます</span><button style="margin-left:auto;font:900 16px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#C8392F,#A22C24);padding:14px 30px;border:none;border-radius:11px;box-shadow:0 3px 0 #7E2019,0 4px 10px rgba(162,44,36,.3)">🔒 正解を公開して締め切る</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== D5 : 進行 ===== -->
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">④ 公開後の進行（結果確認・次のレースへ）</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="ホスト卓PC / 進行" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <div style="flex:none;display:flex;align-items:center;gap:16px;padding:12px 24px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px"><div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div><span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span></div>
+            <span style="font:700 13px 'Noto Serif JP';color:#F4E7CF">第3R 結果公開済み</span>
+            <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:6px 11px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px"><span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span><span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span></div>
+          </div>
+
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="flex:none;width:248px;background:#EFE3CC;border-right:1px solid #DCC9A6;display:flex;flex-direction:column;padding:18px 16px">
+              <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 12px;margin-bottom:18px"><div style="flex:none;width:38px;height:38px;border-radius:10px;background:#6B4F3A;color:#F4E7CF;display:flex;align-items:center;justify-content:center;font:700 18px 'Noto Serif JP'">た</div><div style="line-height:1.3"><div style="font:700 14px 'Noto Serif JP';color:#2E2A24">たけの試遊卓</div><span style="font:600 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.08em">#4F2A</span></div></div>
+              <span style="font:700 10px 'Noto Sans JP';color:#8A7A60;letter-spacing:.1em;margin-bottom:9px">進行ステップ</span>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">卓をひらく</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">お題を出す</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FBF6EA;border:1px solid #E3D4B8"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#3E8E52;color:#fff;font:700 12px 'Noto Sans JP';display:flex;align-items:center;justify-content:center">✓</span><span style="font:600 13px 'Noto Sans JP';color:#8A7A60">正解を記入</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#6B4F3A;box-shadow:0 1px 0 #5A4226"><span style="flex:none;width:22px;height:22px;border-radius:50%;background:#F4E7CF;color:#6B4F3A;font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">4</span><span style="font:700 13px 'Noto Sans JP';color:#FFF7EA">結果を進行</span></div>
+              </div>
+            </div>
+
+            <div style="flex:1;display:flex;flex-direction:column;padding:24px 34px 0;min-width:0">
+              <div style="display:flex;align-items:center;gap:12px;background:#E3EFE3;border:1px solid #BFD8C2;border-radius:12px;padding:14px 16px;margin-bottom:18px"><div style="flex:none;width:36px;height:36px;border-radius:50%;background:#3E8E52;color:#fff;display:flex;align-items:center;justify-content:center;font:700 17px 'Noto Sans JP'">✓</div><div style="line-height:1.3"><div style="font:700 15px 'Noto Sans JP';color:#2C6E3E">第3R の払戻が完了</div><span style="font:500 12px 'Noto Sans JP';color:#6B4F3A">正解 C→A→E ・ ×2倍 ・ 5人に配分</span></div><span style="margin-left:auto;font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C8392F;padding:5px 10px;border-radius:999px">大画面で発表中</span></div>
+              <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:10px">このレースの結果</span>
+              <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ ranking }}" as="r" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:12px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:11px 14px"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:{{ r.rankBg }};color:{{ r.rankFg }};font:700 14px 'Zilla Slab';display:flex;align-items:center;justify-content:center">{{ r.rank }}</span><span style="font:600 15px 'Noto Sans JP';color:#2E2A24">{{ r.name }}</span><span style="font:600 10px 'Noto Sans JP';color:{{ r.tagFg }};background:{{ r.tagBg }};padding:3px 8px;border-radius:999px">{{ r.tag }}</span><div style="margin-left:auto;display:flex;align-items:baseline;gap:8px"><span style="font:600 12px 'Noto Sans JP';color:#3E8E52">{{ r.delta }}</span><span style="font:900 18px 'Zilla Slab';color:#2E2A24">{{ r.pts }}</span></div></div></sc-for>
+              </div>
+            </div>
+
+            <div style="flex:none;width:300px;background:#FBF6EA;border-left:1px solid #E3D4B8;display:flex;flex-direction:column;padding:22px 20px">
+              <span style="font:700 13px 'Noto Serif JP';color:#2E2A24;margin-bottom:14px">次のアクション</span>
+              <button style="font:900 15px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#E0A24E,#C56A2C);padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 4px 10px rgba(0,0,0,.2);margin-bottom:11px">次のお題を出す</button>
+              <button style="font:700 13px 'Noto Sans JP';color:#6B4F3A;background:#FBF6EA;border:1.5px solid #D8C6A4;padding:13px;border-radius:11px">大画面に結果を再表示</button>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:8px;padding:11px 12px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px"><span style="font:700 13px 'Noto Sans JP';color:#C56A2C">♘</span><span style="font:600 11px/1.5 'Noto Sans JP';color:#8A7A60">プレイヤーは手元で次の予想を待っています</span></div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;padding:14px 24px;background:#FBF6EA;border-top:1px solid #E3D4B8"><span style="font:500 12px 'Noto Sans JP';color:#8A7A60">大画面では1着から順に公開する演出を再生できます</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- スマホ：ホスト操作卓（手元）                                            -->
+  <!-- ===================================================================== -->
+  <div style="max-width:1180px;margin:0 0 14px">
+    <div style="display:flex;align-items:baseline;gap:11px;flex-wrap:wrap">
+      <h2 style="margin:0;font:700 20px/1.1 'Zilla Slab',serif;color:#2E2A24">スマホ ・ ホスト操作卓（手元）</h2>
+      <span style="font:500 13px 'Noto Serif JP';color:#6B4F3A">同じ進行を手元のスマホからも / 5つの状態</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ===================== FRAME 1 : 部屋作成 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">① 部屋を立てる（初期状態）</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面2 ホスト / 部屋作成" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <!-- walnut host bar -->
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              <span style="font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px;box-shadow:0 1px 0 #9A4E1C">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:22px 18px 0">
+            <div style="text-align:center;margin-bottom:22px">
+              <div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:15px;background:#6B4F3A;color:#F4E7CF;font:700 26px 'Noto Serif JP';margin-bottom:11px;box-shadow:0 3px 7px rgba(70,50,30,.3)">た</div>
+              <h2 style="margin:0;font:700 23px/1.2 'Noto Serif JP';color:#2E2A24">新しい卓をひらく</h2>
+              <p style="margin:6px 0 0;font:500 12px 'Noto Sans JP';color:#8A7A60">あなたがこのレースのホストです</p>
+            </div>
+
+            <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">卓の名前</span>
+            <div style="display:flex;align-items:center;background:#FFFDF7;border:2px solid #C56A2C;border-radius:11px;padding:13px 14px;margin-bottom:18px;box-shadow:0 2px 5px rgba(70,50,30,.07)">
+              <span style="font:600 16px 'Noto Sans JP';color:#2E2A24">たけの試遊卓</span><span style="width:2px;height:20px;background:#C56A2C;margin-left:2px"></span>
+            </div>
+
+            <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">あいことば（部屋コード）</span>
+            <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:12px 14px;margin-bottom:18px">
+              <span style="font:900 22px 'Zilla Slab';letter-spacing:.16em;color:#6B4F3A">#4F2A</span>
+              <span style="margin-left:auto;font:700 12px 'Noto Sans JP';color:#C56A2C;background:#FBEFD9;border:1px solid #ECCfa0;padding:8px 13px;border-radius:9px">コピー</span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:11px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:11px;padding:13px 14px">
+              <div style="line-height:1.3"><div style="font:700 13px 'Noto Sans JP';color:#2E2A24">リンクを知っている人が参加</div><span style="font:500 10px 'Noto Sans JP';color:#8A7A60">途中参加もいつでもOK</span></div>
+              <div style="margin-left:auto;width:46px;height:27px;border-radius:999px;background:#3E8E52;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)"><div style="position:absolute;top:2.5px;right:2.5px;width:22px;height:22px;border-radius:50%;background:#FBF6EA;box-shadow:0 1px 2px rgba(0,0,0,.3)"></div></div>
+            </div>
+          </div>
+
+          <div style="flex:none;padding:14px 18px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 17px 'Noto Sans JP';padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.22);margin-bottom:11px">この卓をひらく</button>
+            <button style="width:100%;background:#FBF6EA;color:#6B4F3A;font:700 13px 'Noto Sans JP';padding:12px;border:1.5px solid #D8C6A4;border-radius:11px">プリセットを用意して始める</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 2 : 出題作成 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">② お題と選択肢をつくる（新規・3つ以上）</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面2 ホスト / 出題作成" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 15px/1 'Noto Serif JP';color:#F4E7CF">第3R の出題</span>
+              <span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <!-- tabs -->
+          <div style="flex:none;display:flex;gap:6px;padding:13px 16px 4px;background:#F1E7D3">
+            <div style="flex:1;text-align:center;font:700 13px 'Noto Sans JP';color:#FFF7EA;background:#6B4F3A;padding:10px;border-radius:9px;box-shadow:0 1px 0 #5A412E">新規作成</div>
+            <div style="flex:1;text-align:center;font:600 13px 'Noto Sans JP';color:#8A7A60;background:#FBF6EA;border:1px solid #E0CFAD;padding:10px;border-radius:9px">プリセット</div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:14px 16px 0">
+            <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">お題</span>
+            <div style="background:#FFFDF7;border:2px solid #C56A2C;border-radius:11px;padding:13px 14px;margin-bottom:18px;box-shadow:0 2px 5px rgba(70,50,30,.07)">
+              <span style="font:600 15px/1.5 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</span><span style="width:2px;height:18px;background:#C56A2C;display:inline-block;vertical-align:middle;margin-left:2px"></span>
+            </div>
+
+            <!-- 倍率セレクタ -->
+            <div style="background:#FBF6EA;border:1.5px solid #E0CFAD;border-radius:11px;padding:11px 13px;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+                <span style="font:700 12px 'Noto Sans JP';color:#2E2A24">この設問の重み（倍率）</span>
+                <span style="margin-left:auto;font:500 10px 'Noto Sans JP';color:#8A7A60">出題と同時に公開</span>
+              </div>
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ multipliers }}" as="m" hint-placeholder-count="5">
+                  <div style="flex:1;text-align:center;padding:9px 0;border-radius:9px;background:{{ m.bg }};border:2px solid {{ m.bd }}">
+                    <span style="font:900 16px 'Zilla Slab';color:{{ m.fg }}">{{ m.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:9px">
+              <span style="font:700 12px 'Noto Sans JP';color:#2E2A24">選択肢（出走）</span>
+              <span style="font:600 11px 'Noto Sans JP';color:#3E8E52">6つ</span>
+              <span style="margin-left:auto;font:500 11px 'Noto Sans JP';color:#8A7A60">3着まで選ぶので最低3つ</span>
+            </div>
+
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ choices }}" as="g" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px;padding:9px 11px">
+                  <div style="display:flex;flex-direction:column;gap:2px;opacity:.5"><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div><div style="width:14px;height:2px;background:#A89472;border-radius:2px"></div></div>
+                  <div style="flex:none;width:32px;height:32px;border-radius:7px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 16px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div>
+                  <span style="font:600 14px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                  <span style="margin-left:auto;font:700 16px 'Noto Sans JP';color:#C0AE8C">×</span>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px dashed #C8A27C;border-radius:10px;padding:11px;color:#6B4F3A">
+                <span style="font:700 16px 'Noto Sans JP'">＋</span><span style="font:700 13px 'Noto Sans JP'">選択肢を追加</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;padding:13px 16px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.22)">選択肢を公開して予想スタート</button>
+            <p style="margin:8px 0 0;text-align:center;font:500 10px 'Noto Sans JP';color:#8A7A60">公開後にあなたの1〜3着（正解）を選びます</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 3 : プリセット ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">③ プリセットから出題を呼び出す</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面2 ホスト / プリセット" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 15px/1 'Noto Serif JP';color:#F4E7CF">第3R の出題</span>
+              <span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;gap:6px;padding:13px 16px 4px;background:#F1E7D3">
+            <div style="flex:1;text-align:center;font:600 13px 'Noto Sans JP';color:#8A7A60;background:#FBF6EA;border:1px solid #E0CFAD;padding:10px;border-radius:9px">新規作成</div>
+            <div style="flex:1;text-align:center;font:700 13px 'Noto Sans JP';color:#FFF7EA;background:#6B4F3A;padding:10px;border-radius:9px;box-shadow:0 1px 0 #5A412E">プリセット</div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:14px 16px 0">
+            <div style="display:flex;align-items:center;background:#FBF6EA;border:1px solid #E0CFAD;border-radius:9px;padding:10px 13px;gap:9px;margin-bottom:14px">
+              <div style="width:13px;height:13px;border:2px solid #A89472;border-radius:50%;position:relative"><div style="position:absolute;width:6px;height:2px;background:#A89472;transform:rotate(45deg);right:-5px;bottom:0"></div></div>
+              <span style="font:400 13px 'Noto Sans JP';color:#A89472">登録した出題をさがす</span>
+            </div>
+
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
+                <div style="background:#FBF6EA;border:1px solid #E3D4B8;border-radius:12px;padding:13px 14px;box-shadow:0 2px 4px rgba(70,50,30,.07)">
+                  <div style="display:flex;align-items:flex-start;gap:10px">
+                    <div style="flex:1">
+                      <h3 style="margin:0 0 7px;font:600 15px/1.4 'Noto Serif JP';color:#2E2A24">{{ p.title }}</h3>
+                      <div style="display:flex;gap:5px;flex-wrap:wrap">
+                        <sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="3">
+                          <span style="font:600 10px 'Noto Sans JP';color:#fff;background:{{ c.bg }};border:1.5px solid {{ c.bd }};padding:4px 8px;border-radius:6px">{{ c.t }}</span>
+                        </sc-for>
+                        <span style="font:600 10px 'Noto Sans JP';color:#8A7A60;background:#EFE2C6;padding:4px 8px;border-radius:6px">＋{{ p.more }}</span>
+                      </div>
+                    </div>
+                    <button style="flex:none;align-self:center;font:700 12px 'Noto Sans JP';color:#FFF7EA;background:linear-gradient(#8A6A47,#6B4F3A);padding:9px 14px;border:none;border-radius:8px;box-shadow:0 1px 0 #5A412E">使う</button>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px dashed #C8A27C;border-radius:11px;padding:13px;color:#6B4F3A">
+                <span style="font:700 16px 'Noto Sans JP'">＋</span><span style="font:700 13px 'Noto Sans JP'">プリセットを新規登録</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;padding:13px 16px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <p style="margin:0;text-align:center;font:500 11px 'Noto Sans JP';color:#8A7A60">「使う」を押すと出題エディタに読み込まれ、公開できます</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 4 : 正解選択 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">④ 正解（自分の1〜3着）を選ぶ＝締切トリガー</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面2 ホスト / 正解選択" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 15px/1 'Noto Serif JP';color:#F4E7CF">第3R 正解を記入</span>
+              <span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <!-- お題 + note -->
+          <div style="flex:none;padding:13px 16px;background:#3E6F52;border-bottom:3px solid #2C4F3A">
+            <div style="background:#FBF6EA;border-radius:10px;padding:11px 13px">
+              <span style="font:700 14px/1.4 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</span>
+              <span style="font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C8392F;padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:middle">×2倍</span>
+            </div>
+            <p style="margin:9px 2px 0;font:600 11px/1.5 'Noto Sans JP';color:#FBF6EA">あなたの1〜3着を選ぶと予想が締め切られ、答え合わせされます</p>
+          </div>
+
+          <!-- choices to pick truth -->
+          <div style="flex:1;overflow:hidden;padding:13px 16px 0;display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ truthPick }}" as="g" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:11px;background:#FBF6EA;border:1.5px solid {{ g.rowBd }};border-radius:11px;padding:9px 12px;box-shadow:0 2px 4px rgba(70,50,30,.06)">
+                <div style="flex:none;width:36px;height:36px;border-radius:8px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 18px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div>
+                <span style="font:600 15px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                <span style="margin-left:auto;font:700 13px 'Noto Sans JP';color:{{ g.badgeFg }};background:{{ g.badgeBg }};border:1.5px solid {{ g.badgeBd }};padding:6px 12px;border-radius:999px">{{ g.badge }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- 正解 preview + participation + close -->
+          <div style="flex:none;padding:12px 16px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+              <span style="font:700 11px 'Noto Sans JP';color:#8A7A60">あなたの本命（正解）</span>
+              <span style="font:900 17px 'Zilla Slab';color:#2E2A24">C → A → E</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:9px 11px;background:#E3EFE3;border:1px solid #BFD8C2;border-radius:9px">
+              <span style="font:700 12px 'Noto Sans JP';color:#2C6E3E">4人 提出済み</span>
+              <span style="font:500 11px 'Noto Sans JP';color:#6B4F3A">／ 1人 未提出</span>
+              <span style="margin-left:auto;font:500 10px 'Noto Sans JP';color:#8A7A60">締切後は変更不可</span>
+            </div>
+            <button style="width:100%;background:linear-gradient(#C8392F,#A22C24);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #7E2019,0 5px 12px rgba(162,44,36,.3)">🔒 正解を公開して締め切る</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 5 : 公開後の進行 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">⑤ 公開後の進行（結果確認・次のレースへ）</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面2 ホスト / 進行" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 15px/1 'Noto Serif JP';color:#F4E7CF">第3R 結果公開済み</span>
+              <span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:16px 16px 0">
+            <!-- done banner -->
+            <div style="display:flex;align-items:center;gap:11px;background:#E3EFE3;border:1px solid #BFD8C2;border-radius:12px;padding:13px 14px;margin-bottom:16px">
+              <div style="flex:none;width:34px;height:34px;border-radius:50%;background:#3E8E52;color:#fff;display:flex;align-items:center;justify-content:center;font:700 16px 'Noto Sans JP'">✓</div>
+              <div style="line-height:1.3"><div style="font:700 14px 'Noto Sans JP';color:#2C6E3E">第3R の払戻が完了</div><span style="font:500 11px 'Noto Sans JP';color:#6B4F3A">正解 C→A→E ・ 5人に配分</span></div>
+            </div>
+
+            <!-- mini ranking -->
+            <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:9px">このレースの結果</span>
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:7px">
+              <sc-for list="{{ ranking }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:11px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px;padding:9px 12px">
+                  <span style="flex:none;width:22px;height:22px;border-radius:50%;background:{{ r.rankBg }};color:{{ r.rankFg }};font:700 12px 'Zilla Slab';display:flex;align-items:center;justify-content:center">{{ r.rank }}</span>
+                  <span style="font:600 14px 'Noto Sans JP';color:#2E2A24">{{ r.name }}</span>
+                  <span style="font:600 10px 'Noto Sans JP';color:{{ r.tagFg }};background:{{ r.tagBg }};padding:3px 7px;border-radius:999px">{{ r.tag }}</span>
+                  <div style="margin-left:auto;display:flex;align-items:baseline;gap:7px"><span style="font:600 11px 'Noto Sans JP';color:#3E8E52">{{ r.delta }}</span><span style="font:900 16px 'Zilla Slab';color:#2E2A24">{{ r.pts }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+
+          </div>
+
+          <div style="flex:none;padding:13px 16px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8;display:flex;gap:10px">
+            <button style="flex:none;width:52px;background:#FBF6EA;color:#6B4F3A;font:700 11px 'Noto Sans JP';padding:12px 0;border:1.5px solid #D8C6A4;border-radius:11px">結果<br>再表示</button>
+            <button style="flex:1;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.22)">次のお題を出す</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const C = [
+      {n:'A', name:'やきそば',     bg:'#F7F4EC', fg:'#2E2A24', bd:'#D8CDB8'},
+      {n:'B', name:'ほたて',       bg:'#2E2A24', fg:'#F7F4EC', bd:'#2E2A24'},
+      {n:'C', name:'マシュマロ',   bg:'#C8392F', fg:'#ffffff', bd:'#A22C24'},
+      {n:'D', name:'しいたけ',     bg:'#2F6FB0', fg:'#ffffff', bd:'#235487'},
+      {n:'E', name:'とうもろこし', bg:'#ECC23E', fg:'#2E2A24', bd:'#D3A626'},
+      {n:'F', name:'おにぎり',     bg:'#3E8E52', fg:'#ffffff', bd:'#2E6E3E'},
+    ];
+    // host's own truth: 1着=3, 2着=1, 3着=5
+    const multipliers = ['1','2','3','5','10'].map(v => {
+      const on = v === '2';
+      return { label: v + 'x', bg: on ? '#C8392F' : '#FFFDF7', fg: on ? '#FFF7EA' : '#8A6A47', bd: on ? '#A22C24' : '#E0CFAD' };
+    });
+    const pick = { 'C':'1着', 'A':'2着', 'E':'3着' };
+    const truthPick = C.map(g => {
+      const a = pick[g.n] || null;
+      return { ...g,
+        badge: a || 'えらぶ',
+        rowBd: a ? '#C56A2C' : '#E3D4B8',
+        badgeBg: a ? '#C56A2C' : '#F1E7D3',
+        badgeFg: a ? '#FFF7EA' : '#A89472',
+        badgeBd: a ? '#9A4E1C' : '#E0CFAD',
+      };
+    });
+
+    const presets = [
+      { title:'BBQで肉以外に焼きたいのは？', more:3, chips:[
+        {t:'やきそば', bg:'#B6A98E', bd:'#9c8f73'}, {t:'ほたて', bg:'#2E2A24', bd:'#2E2A24'}, {t:'マシュマロ', bg:'#C8392F', bd:'#A22C24'} ] },
+      { title:'無人島にひとつ持っていくなら？', more:2, chips:[
+        {t:'ナイフ', bg:'#2F6FB0', bd:'#235487'}, {t:'ライター', bg:'#C56A2C', bd:'#9A4E1C'}, {t:'本', bg:'#3E8E52', bd:'#2E6E3E'} ] },
+      { title:'最強の朝ごはんは？', more:1, chips:[
+        {t:'納豆ごはん', bg:'#5E8463', bd:'#456b4b'}, {t:'トースト', bg:'#C9A24B', bd:'#a8842f'}, {t:'お茶漬け', bg:'#4E6E8E', bd:'#3a566f'} ] },
+      { title:'旅行で泊まるなら？', more:2, chips:[
+        {t:'温泉旅館', bg:'#9A4747', bd:'#7a3535'}, {t:'ホテル', bg:'#4A5A6E', bd:'#374555'}, {t:'民宿', bg:'#7A5230', bd:'#5e3e23'} ] },
+    ];
+
+    const R = (rank,name,pts,delta,me,host) => ({
+      rank:String(rank), name, pts:String(pts), delta:'+'+delta,
+      rankBg: rank===1 ? '#E3B42A' : (rank===2 ? '#C4C0B4' : (rank===3 ? '#C8956A' : '#E0CFAD')),
+      rankFg: rank<=3 ? '#FFF' : '#8A7A60',
+      tag: host ? 'あなた' : '',
+      tagBg: host ? '#6B4F3A' : 'transparent',
+      tagFg: host ? '#FBF6EA' : 'transparent',
+    });
+    const ranking = [
+      R(1,'チームたぬき',20,12,false,false),
+      R(2,'きつね組',14,6,false,false),
+      R(3,'ふくろう亭',13,8,false,false),
+      R(4,'こぐま',8,2,false,true),
+      R(5,'はりねずみ',5,0,false,false),
+    ];
+
+    const participants = [
+      { name:'チームたぬき', initial:'た', color:'#B05A4E', sub:true },
+      { name:'きつね組',     initial:'き', color:'#C9A24B', sub:true },
+      { name:'ふくろう亭',   initial:'ふ', color:'#4E6E8E', sub:true },
+      { name:'はりねずみ',   initial:'は', color:'#5E8463', sub:true },
+      { name:'うさぎ団',     initial:'う', color:'#7A6FA8', sub:false },
+    ].map(p => ({ ...p,
+      statusText: p.sub ? '提出済み' : '未提出',
+      statusFg: p.sub ? '#2C6E3E' : '#A14A3F',
+      statusBg: p.sub ? '#E3EFE3' : '#FBE3DF',
+      statusBd: p.sub ? '#BFD8C2' : '#EBB7B1',
+    }));
+
+    return { choices: C, truthPick, presets, ranking, multipliers, participants };
+  }
+}
+</script>
+</body>
+</html>

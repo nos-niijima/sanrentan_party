@@ -1,0 +1,40 @@
+{
+  "name": "sanrentan-party",
+  "version": "1.0.0",
+  "description": "サンレンタン (host-reveal パーティゲーム) を LAN/トンネルで遊ぶための小さな monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "dev:frontend": "cd apps/frontend && npm run dev",
+    "dev:backend": "cd apps/backend && npm run start:dev",
+    "test": "turbo run test",
+    "check-errors": "node scripts/check-errors.js",
+    "check:wiring": "node scripts/check-wiring.mjs",
+    "type-check": "turbo run type-check",
+    "db:migrate": "cd apps/backend && npx prisma migrate dev",
+    "db:generate": "cd apps/backend && npx prisma generate",
+    "db:studio": "cd apps/backend && npx prisma studio",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0",
+    "turbo": "^2.8.17",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@nestjs/core", "@prisma/client", "@prisma/engines", "prisma"]
+  }
+}

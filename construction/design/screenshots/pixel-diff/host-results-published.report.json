@@ -1,0 +1,14 @@
+{
+  "frameId": "host-results-published",
+  "pixelDiffCount": null,
+  "totalPixels": null,
+  "ratio": null,
+  "designRenderSuccess": true,
+  "implAvailable": true,
+  "files": {
+    "design": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-results-published.design.png",
+    "impl": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-results-published.impl.png",
+    "diff": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-results-published.diff.png"
+  },
+  "error": null
+}

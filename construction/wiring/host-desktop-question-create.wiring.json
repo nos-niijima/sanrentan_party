@@ -1,0 +1,55 @@
+{
+  "screen": "host-desktop-question-create",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "DesktopRail aside (data-testid=sr-host-desktop-rail, hidden lg:flex)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "desktop chrome の左 rail コンテナ。Tailwind の lg: breakpoint (>=1024px) で表示される。内部要素 (卓カード/ステップナビ/参加状況) で個別配線する。"
+    },
+    {
+      "selector": "DesktopRail 卓カード '{displayRoomName}' + '部屋 #XXXX'",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時 '試遊卓' fallback) + backend.Room.id (末尾 4 桁 hex-ish)",
+      "alive": true,
+      "userTask": "desktop 表示時にも卓名と部屋 ID 末尾を識別する"
+    },
+    {
+      "selector": "DesktopRail 進行ステップ list (data-testid=sr-host-desktop-step-1..4)",
+      "kind": "display",
+      "wiredTo": "client.desktopStep (phase → 1/2/3/4 へ derive)",
+      "alive": true,
+      "userTask": "現在の進行ステップを確認する (D② 出題作成では step=2 が current)"
+    },
+    {
+      "selector": "DesktopRail 参加状況 '{othersCount}人 参加中'",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (rows.length)",
+      "alive": true,
+      "userTask": "desktop でも参加人数を rail で常時確認する"
+    },
+    {
+      "selector": "DesktopAside 参加者リスト (data-testid=sr-host-desktop-aside, phase=pose)",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (rows)",
+      "alive": true,
+      "userTask": "右 aside で参加者一覧と本人識別 (color dot) を確認する"
+    },
+    {
+      "selector": "DesktopAside aside 注釈 '公開後にあなたの正解を記入します' (phase=pose)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "出題作成フェーズでの静的注記 (次フェーズの予告)"
+    },
+    {
+      "selector": "HostScreen 中央 mobile shell (改修なし)",
+      "kind": "display",
+      "wiredTo": "client.HostPose (既存 mobile shell)",
+      "alive": true,
+      "userTask": "desktop でも mobile と同じ出題エディタを 430px 列で使用する"
+    }
+  ]
+}

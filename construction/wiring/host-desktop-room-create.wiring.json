@@ -1,0 +1,13 @@
+{
+  "screen": "host-desktop-room-create",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/app/rooms/new/page.tsx",
+  "elements": [
+    {
+      "selector": "(stage5 deviation marker)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "stage5 desktop responsive は /rooms/<id> 側 (HostScreen) の rail/aside augment に集中した。D① (部屋を立てる) は pre-creation form (/rooms/new) であり、HostScreen の責務外。さらに設計 D① は確定仕様で撤去された要素 (あいことば/コピー/プリセットを用意して始める/たけの試遊卓 placeholder) を含むため、設計をそのまま port すると spec 矛盾になる。stage5 では D② D③ D④ D⑤ の 4 frame に desktop chrome を追加し、D① の desktop 専用化は別タスク (escalation 必須: 撤去済み要素を desktop でも撤去するかを user 確認) に委ねる。"
+    }
+  ]
+}

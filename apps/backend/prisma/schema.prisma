@@ -1,0 +1,87 @@
+// Prisma schema — サンレンタン Party (sanrentan_party)
+// 規約: uuid string @id / 明示 @@map(PascalCase) / FK と絞り込み列に @@index /
+//       子 FK は onDelete: Cascade（例外: RoomPlayer.userId = SetNull）
+// 生成先は ../src/generated/prisma（prisma-client provider, driver adapter 利用で
+// クエリエンジンバイナリ不要）。DATABASE_URL は prisma.config.ts の env() 経由。
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoomStatus {
+  open
+  playing
+  closed
+}
+
+// ---- ユーザー ----
+// サンレンタン は cookie identity (pb_uid) で運用するため、googleId 列は
+// cookie token (= anonymous id) を保持するためのキーとして再利用している。
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  googleId  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roomPlayers RoomPlayer[]
+  presets     Preset[]
+
+  @@map("User")
+}
+
+model Preset {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  question  String
+  choices   String[]
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("Preset")
+}
+
+// ---- ルーム（実行中状態 = サーバ権威。ポーリング対象）----
+// サンレンタン 単一ゲーム前提のため Game/GameSpec モデルは持たない。
+// 採点ロジックは engine module 内の host-reveal + ranked-triple ruleset に固定される。
+model Room {
+  id        String     @id @default(uuid())
+  name      String?
+  isPublic  Boolean    @default(true)
+  state     Json
+  status    RoomStatus @default(open)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  players RoomPlayer[]
+
+  @@index([status])
+  @@map("Room")
+}
+
+// ---- ルーム内プレイヤー（席ごとの非公開情報）----
+model RoomPlayer {
+  id           String   @id @default(uuid())
+  roomId       String
+  userId       String?
+  seat         Int
+  color        String?
+  privateState Json
+  createdAt    DateTime @default(now())
+
+  // ルーム削除でプレイヤー行も消す。ただしユーザー削除では席履歴を残す（SetNull）。
+  room Room  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([roomId, seat])
+  @@index([userId])
+  @@map("RoomPlayer")
+}

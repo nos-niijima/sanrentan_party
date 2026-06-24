@@ -1,0 +1,202 @@
+{
+  "screen": "host-setup-init",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar '‹' (back button, aria-label='戻る')",
+      "kind": "button",
+      "wiredTo": "next/navigation router.back() if window.history.length > 1 else router.push('/browse') (履歴が無い場合は安全な fallback として公開作品一覧へ)",
+      "alive": true,
+      "userTask": "前の画面へ戻る"
+    },
+    {
+      "selector": "WalnutBar title '第NR の出題' (h2 / heading)",
+      "kind": "display",
+      "wiredTo": "client.barTitle (= state.history.length+1 + round.status から derive)",
+      "alive": true,
+      "userTask": "現在のフェーズ(何R / 出題 or 正解記入 or 公開済)を確認する"
+    },
+    {
+      "selector": "badge 'ホスト操作卓'",
+      "kind": "display",
+      "wiredTo": "client.isHost (SanrentanPlay の host 判定経由)",
+      "alive": true,
+      "userTask": "自分がホスト権限で操作中であることを確認する"
+    },
+    {
+      "selector": "WalnutBar 卓名行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' generic fallback。ホスト名は絶対に出さない)",
+      "alive": true,
+      "userTask": "対戦中の自端末で、今居る卓の名称(/rooms/new で入力された卓名)を控えめに確認する"
+    },
+    {
+      "selector": "InviteCard label 'プレイヤーを招待'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "招待カードの静的ラベル"
+    },
+    {
+      "selector": "InviteCard badge 'あなた = ホスト'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホスト identity の静的バッジ(常時表示)"
+    },
+    {
+      "selector": "InviteCard text '{others}人 参加中'",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (others = rows.length, host除く)",
+      "alive": true,
+      "userTask": "現在の参加プレイヤー数を確認する"
+    },
+    {
+      "selector": "InviteCard text '#{roomCode}'",
+      "kind": "display",
+      "wiredTo": "backend.Room.id (slice(-4).toUpperCase())",
+      "alive": true,
+      "userTask": "あいことば(部屋コード末尾4文字)を確認する"
+    },
+    {
+      "selector": "InviteCard button 'コピー' (あいことば row)",
+      "kind": "button",
+      "wiredTo": "clipboard.link (navigator.clipboard.writeText + legacy fallback) + visible 'コピー済 ✓' (Low-12 fix: 連打時は前回 reset timer を clear して 1500ms 表示を維持し ちらつき防止)",
+      "alive": true,
+      "userTask": "招待リンクをクリップボードへコピーする"
+    },
+    {
+      "selector": "InviteCard text 'リンクを知っている人が参加'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "招待 panel の静的説明 literal"
+    },
+    {
+      "selector": "InviteCard text '途中参加もいつでもOK'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "招待 panel の静的注釈 literal"
+    },
+    {
+      "selector": "InviteCard button 'リンクをコピー' (2 つ目の copy button)",
+      "kind": "button",
+      "wiredTo": "clipboard.link (同上 / Low-12 fix: 連打 debounce 済み)",
+      "alive": true,
+      "userTask": "招待リンクをクリップボードへコピーする(別位置の同機能ボタン)"
+    },
+    {
+      "selector": "InviteCard link '共有画面（大画面）を開く →'",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share) (target=_blank)",
+      "alive": true,
+      "userTask": "プロジェクタ用の共有画面(/share)を別タブで開く"
+    },
+    {
+      "selector": "tab 'プリセット' (HostPose tablist)",
+      "kind": "toggle",
+      "wiredTo": "client.setTab + ARIA tab semantics (aria-selected / panel 切替)",
+      "alive": true,
+      "userTask": "プリセット出題リストへ切り替える"
+    },
+    {
+      "selector": "tab '新規作成' (HostPose tablist, 既定 active)",
+      "kind": "toggle",
+      "wiredTo": "client.setTab + ARIA tab semantics",
+      "alive": true,
+      "userTask": "新規出題の作成エディタへ切り替える"
+    },
+    {
+      "selector": "contentEditable 'お題' (role=textbox / aria-label='お題')",
+      "kind": "input",
+      "wiredTo": "backend.act('poseRound', {prompt})",
+      "alive": true,
+      "userTask": "ラウンドのお題文を入力する(編集後の値が poseRound に送信される)"
+    },
+    {
+      "selector": "input aria-label='選択肢{n}' (1〜6 etc.)",
+      "kind": "input",
+      "wiredTo": "backend.act('poseRound', {choices})",
+      "alive": true,
+      "userTask": "選択肢(出走)テキストを入力する"
+    },
+    {
+      "selector": "枠番チップ (n=1..6 表示)",
+      "kind": "display",
+      "wiredTo": "client.choices index → GATES[idx % len]",
+      "alive": true,
+      "userTask": "各選択肢に割り当てられた枠番(色付き)を視認する"
+    },
+    {
+      "selector": "button aria-label='選択肢{n}を削除' (× ボタン, choices>3 のみ)",
+      "kind": "button",
+      "wiredTo": "client.removeChoice (choices state 変更 + 再描画)",
+      "alive": true,
+      "userTask": "余分な選択肢を削除する"
+    },
+    {
+      "selector": "button '＋ 選択肢を追加'",
+      "kind": "button",
+      "wiredTo": "client.addChoice (choices state 追加 + 再描画)",
+      "alive": true,
+      "userTask": "選択肢を 1 つ追加する"
+    },
+    {
+      "selector": "drag handle (3 horizontal lines)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "drag&drop ハンドルの視覚のみ。並べ替え機能は未配線(aria-hidden)"
+    },
+    {
+      "selector": "text '{validChoices.length}つ'",
+      "kind": "display",
+      "wiredTo": "client.choices (valid count, 動的)",
+      "alive": true,
+      "userTask": "現在の有効選択肢数を確認する"
+    },
+    {
+      "selector": "text '3着まで選ぶので最低3つ'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "静的ヒント literal"
+    },
+    {
+      "selector": "button '選択肢を公開して予想スタート' (新規作成タブ CTA)",
+      "kind": "button",
+      "wiredTo": "backend.act('poseRound', {prompt, choices})",
+      "alive": true,
+      "userTask": "編集中のお題/選択肢を確定して予想を開始する"
+    },
+    {
+      "selector": "text '公開後にあなたの1〜3着（正解）を選びます'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "CTA 下の静的説明 literal"
+    },
+    {
+      "selector": "RankingPanel 見出し 'プレイヤーの累積順位'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ランキングセクションの静的見出し"
+    },
+    {
+      "selector": "RankingPanel sublabel '（あなた＝出題者は対象外）'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホスト除外仕様の静的注釈 literal"
+    },
+    {
+      "selector": "RankingPanel rows (Ranking component) / empty-state テキスト",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer + state.scores (rows: seat/name/pts/color)",
+      "alive": true,
+      "userTask": "ホスト除く累積順位を確認する"
+    }
+  ]
+}

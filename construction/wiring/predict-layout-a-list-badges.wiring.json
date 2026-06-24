@@ -1,0 +1,216 @@
+{
+  "screen": "predict-layout-a-list-badges",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/PredictScreen.tsx",
+  "elements": [
+    {
+      "selector": "PredictShell link '‹' (back to /browse)",
+      "kind": "link",
+      "wiredTo": "navigate(/browse)",
+      "alive": true,
+      "userTask": "ダッシュボードへ戻る"
+    },
+    {
+      "selector": "title 'サンレンタン' (DISPLAY font)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "アプリ名の静的ブランディング literal"
+    },
+    {
+      "selector": "ステータスバー時計 '9:41' (design dc.html)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "2026-06-24 ユーザー判断で撤去確定 (mock 装飾): 実アプリではデバイス自体が時刻を表示するため不要。conformance test の requiredText '9:41' は削除済み。"
+    },
+    {
+      "selector": "badge '部屋 #{shortCode}'",
+      "kind": "display",
+      "wiredTo": "backend.Room.id (slice(-4).toUpperCase())",
+      "alive": true,
+      "userTask": "現在の部屋コードを確認する"
+    },
+    {
+      "selector": "PredictShell 卓名サブ行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "プレイヤー画面のトップバーで卓名を控えめに確認する"
+    },
+    {
+      "selector": "RaceBanner badge '第NR'",
+      "kind": "display",
+      "wiredTo": "client.roundNo (= history.length+1)",
+      "alive": true,
+      "userTask": "現在のラウンド番号を確認する"
+    },
+    {
+      "selector": "RaceBanner pill '予想受付中'",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.status='open' (この screen 自体が status 由来)",
+      "alive": true,
+      "userTask": "予想受付フェーズであることを把握する"
+    },
+    {
+      "selector": "RaceBanner '⏳ ホスト確定待ち'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "open 中の静的注釈 literal(状態は predict screen に居る事実で表現)"
+    },
+    {
+      "selector": "RaceBanner h2 (round.prompt)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.prompt",
+      "alive": true,
+      "userTask": "ホストが出したお題を読む"
+    },
+    {
+      "selector": "RaceBanner subtext '出題 {hostName}'",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer (hostSeat の name)",
+      "alive": true,
+      "userTask": "出題者の名前を確認する"
+    },
+    {
+      "selector": "instruction '出走から1着→2着→3着を予想'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "予想操作の静的説明 literal"
+    },
+    {
+      "selector": "instruction sub 'タップで順に指定'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "予想操作の静的補足"
+    },
+    {
+      "selector": "ChoiceRow button (per round.choices[i])",
+      "kind": "button",
+      "wiredTo": "client.toggle(c) → picks state (順位 = index)",
+      "alive": true,
+      "userTask": "選択肢に 1〜3 着を順に割り当てる/取り消す"
+    },
+    {
+      "selector": "GateChip (per choice / 枠番色)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.choices index",
+      "alive": true,
+      "userTask": "各選択肢の枠番(色)を視認する"
+    },
+    {
+      "selector": "ChoiceRow text {choice}",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.choices[i]",
+      "alive": true,
+      "userTask": "選択肢のラベルを読む"
+    },
+    {
+      "selector": "ChoiceRow badge '指定' / '1着' / '2着' / '3着'",
+      "kind": "display",
+      "wiredTo": "client.picks.indexOf(c)",
+      "alive": true,
+      "userTask": "自分が今割り当てた順位を視認する"
+    },
+    {
+      "selector": "error message (err state)",
+      "kind": "display",
+      "wiredTo": "client.err (predict API 失敗時)",
+      "alive": true,
+      "userTask": "送信失敗時のエラー文言を確認する"
+    },
+    {
+      "selector": "BetSlipA header '三連単 馬券'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "馬券スリップの静的ラベル literal"
+    },
+    {
+      "selector": "BetSlipA sub-header '確定まで買い直し可' (未提出時)",
+      "kind": "display",
+      "wiredTo": "client.submitted=false 分岐の literal",
+      "alive": true,
+      "userTask": "未提出ユーザーが買い直し可能であることを把握する"
+    },
+    {
+      "selector": "BetSlipA submitted hint '✓ 提出済み' (提出済時 かつ ローカル picks がサーバ確定値と一致)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.submittedSeats.includes(mySeat) && round.predictions[mySeat].answer.slice(0,3).length===3 && picks.length===3 && picks == round.predictions[mySeat].answer.slice(0,3) — picksMatchServer は serverAnswer.length===3 を必須にしており、空配列 every() による false positive を排除する。",
+      "alive": true,
+      "userTask": "サーバ確定された自分の予想を視認する (reload 後でも識別できる)"
+    },
+    {
+      "selector": "BetSlipA dirty hint '修正中 (未送信)' (提出済時 かつ ローカル picks がサーバ確定値と差分)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.submittedSeats.includes(mySeat) && !(serverAnswer.length===3 && picks.length===3 && picks == serverAnswer) — submitted=true でも serverAnswer 未保存 or picks 差分なら 'dirty' 表示。",
+      "alive": true,
+      "userTask": "現在の編集中 picks が未送信であることを把握する (reload 直後と区別)"
+    },
+    {
+      "selector": "BetSlipA ミシン目パンチ穴 / コーナー装飾",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "馬券レイアウトの装飾(視覚のみ)"
+    },
+    {
+      "selector": "BetSlipA position chip 1着/2着/3着 (picks[i] or '?')",
+      "kind": "display",
+      "wiredTo": "client.picks[i] → gateOf(choices, c)",
+      "alive": true,
+      "userTask": "自分が選んだ着順を馬券プレビューで確認する"
+    },
+    {
+      "selector": "BetSlipA arrows '→' (separator)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "1→2→3 着の視覚セパレータ"
+    },
+    {
+      "selector": "BetSlipA CTA (label: 送信中='送信中…' / 未完成='この目で馬券を買う' / 完成かつ未提出='この目で馬券を買う' / 完成かつ提出済かつローカル一致='同じ予想を再送'(clickable, 冪等) / 完成かつ提出済かつ差分='修正を送信する'(active))",
+      "kind": "button",
+      "wiredTo": "backend.act('predict', {answer: picks}) — 300ms debounce + busy state guard。完了後に toast を発火。disabled 条件: !complete || busy。backend は open 中の predict upsert を許可する仕様 (sanrentan-scenario / multi-player-check で assertion 済) のため synced 時も clickable に維持し、同じ answer の再送は冪等な no-op として扱う。",
+      "alive": true,
+      "userTask": "現在の picks を予想として確定送信する (サーバ保存値と一致していても再送可能 = 冪等 upsert)"
+    },
+    {
+      "selector": "submit success toast '✓ ご予想 a → b → c を提出しました'",
+      "kind": "display",
+      "wiredTo": "client.toast (predict success 後 4s auto-dismiss / aria-live=polite)",
+      "alive": true,
+      "userTask": "提出成功を即時に把握する (永続化は submitted hint が担う)"
+    },
+    {
+      "selector": "sr-only '3着まで選んでください' (disabled 時の a11y reason)",
+      "kind": "display",
+      "wiredTo": "client.picks.length<3 で出力 (aria-describedby='sr-cta-reason')",
+      "alive": true,
+      "userTask": "スクリーンリーダー利用者が CTA disable 理由を知る"
+    },
+    {
+      "selector": "RaceBanner 倍率バッジ '×N 倍率' (data-testid=sr-multiplier-badge, round.multiplier>1 のみ)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.multiplier (>1 のみ表示, 1x 時は非表示)",
+      "alive": true,
+      "userTask": "このラウンドが高倍率設問であることを視認する"
+    },
+    {
+      "selector": "RaceBanner 赤帯 '🔥 倍率設問 / この設問は通常の N倍 で採点されます' (data-testid=sr-multiplier-banner, round.multiplier>1 のみ)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.multiplier (>1 のみ表示, 1x 時は非表示)",
+      "alive": true,
+      "userTask": "倍率設問の採点ルールを文章で確認する"
+    },
+    {
+      "selector": "BetSlipA header suffix '・ ×N倍' (data-testid=sr-betslip-multiplier-suffix, round.multiplier>1 のみ)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.multiplier (>1 のみ表示, 1x 時は非表示)",
+      "alive": true,
+      "userTask": "馬券プレビュー上で倍率を再確認する"
+    }
+  ]
+}

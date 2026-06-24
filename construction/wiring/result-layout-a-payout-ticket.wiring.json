@@ -1,0 +1,209 @@
+{
+  "screen": "result-layout-a-payout-ticket",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/ResultScreen.tsx",
+  "elements": [
+    {
+      "selector": "Confetti animation (myPts===6)",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[mySeat].points (===6 で発火)",
+      "alive": true,
+      "userTask": "サンレンタン(満点)達成時に祝祭表現を見る"
+    },
+    {
+      "selector": "PodiumSection 部屋コードバッジ '部屋 #{shortCode}'",
+      "kind": "display",
+      "wiredTo": "backend.Room.id",
+      "alive": true,
+      "userTask": "現在の部屋コードを確認する"
+    },
+    {
+      "selector": "PodiumSection 卓名 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar, 部屋コードバッジ隣)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "結果発表画面の入場券エリアで卓名を控えめに確認する"
+    },
+    {
+      "selector": "badge '第{roundNo}R'",
+      "kind": "display",
+      "wiredTo": "client.roundNo (history.length 由来)",
+      "alive": true,
+      "userTask": "今表示しているのが第何ラウンドの結果か確認する"
+    },
+    {
+      "selector": "badge '結果確定'",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.status='revealed' (この screen が status 由来)",
+      "alive": true,
+      "userTask": "ラウンドが確定済みであることを把握する"
+    },
+    {
+      "selector": "text 'ホストの本命'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "表彰台ヘッダ右の静的キャプション literal"
+    },
+    {
+      "selector": "PodiumFull 1着/2着/3着 chip (g.n + answer[i])",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.answer + choices",
+      "alive": true,
+      "userTask": "ホストの正解 1〜3 着を視覚で確認する"
+    },
+    {
+      "selector": "PodiumFull '🌹 1着' bow",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "1着強調の装飾(花飾り絵文字 + 静的ラベル)"
+    },
+    {
+      "selector": "PodiumFull 表彰台 step blocks (1/2/3 数字)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "表彰台の高さ違いブロック装飾(ランクは answer 由来だが表示する '1/2/3' literal 自体は装飾)"
+    },
+    {
+      "selector": "役ヘッダ {myHand} ({hit ? '！' : ''})",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[mySeat].hand",
+      "alive": true,
+      "userTask": "自分が取った役名(orハズレ)を確認する"
+    },
+    {
+      "selector": "役ヘッダ subtext (HAND_PT_DESC[hand])",
+      "kind": "display",
+      "wiredTo": "client.HAND_PT_DESC[hand] (役名 → 説明文 lookup, 動的)",
+      "alive": true,
+      "userTask": "取った役の意味(配点条件)を確認する"
+    },
+    {
+      "selector": "役ヘッダ ★ medal アイコン",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "勲章アイコン(視覚装飾, 常時表示)"
+    },
+    {
+      "selector": "+{myPts} 点 (大きな数字)",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[mySeat].points",
+      "alive": true,
+      "userTask": "今ラウンドで獲得した点数を確認する"
+    },
+    {
+      "selector": "MyBetWithStamp 馬券チップ列 (picks → 枠番)",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[mySeat].answer + round.choices",
+      "alive": true,
+      "userTask": "自分の提出した馬券(1〜3着)を確認する"
+    },
+    {
+      "selector": "MyBetWithStamp ✓ アイコン (hit のみ)",
+      "kind": "display",
+      "wiredTo": "client.hit (= myPts>0)",
+      "alive": true,
+      "userTask": "的中していることを視覚で確認する"
+    },
+    {
+      "selector": "MyBetWithStamp '的中' スタンプ (hit のみ)",
+      "kind": "display",
+      "wiredTo": "client.hit",
+      "alive": true,
+      "userTask": "的中したことを大きなスタンプで把握する"
+    },
+    {
+      "selector": "MyBetWithStamp 切り取り穴/破線 (装飾)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "馬券レイアウトの装飾(視覚のみ)"
+    },
+    {
+      "selector": "YakuStrip 役早見表 (5 chip)",
+      "kind": "display",
+      "wiredTo": "client.HAND_PT lookup + 自分の hand でハイライト",
+      "alive": true,
+      "userTask": "全役の点数と自分の役のハイライトを確認する"
+    },
+    {
+      "selector": "累積順位 見出し '部屋の累積順位'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "累積順位セクションの静的見出し"
+    },
+    {
+      "selector": "累積順位 sublabel '{roundNo}レース終了'",
+      "kind": "display",
+      "wiredTo": "client.roundNo (history.length 由来)",
+      "alive": true,
+      "userTask": "終了したレース数を確認する"
+    },
+    {
+      "selector": "RankingWithDelta rows (rows.map)",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer + state.scores + round.predictions",
+      "alive": true,
+      "userTask": "部屋全員の累積順位と今R増分を確認する"
+    },
+    {
+      "selector": "ranking row PlayerColorDot",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer.color (fallback seat → 既定色)",
+      "alive": true,
+      "userTask": "駒色で各プレイヤーを識別する"
+    },
+    {
+      "selector": "ranking row badge 'あなた' / 'ホスト'",
+      "kind": "display",
+      "wiredTo": "client.row.isMe / row.isHost (rows 構築時に判定)",
+      "alive": true,
+      "userTask": "自分とホストを行内で見分ける"
+    },
+    {
+      "selector": "footer '次のレースを待っています'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "result screen の静的フッターメッセージ literal"
+    },
+    {
+      "selector": "footer subtext 'ホストが次のお題を公開します'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "result screen の静的フッター補足"
+    },
+    {
+      "selector": "footer '待機中' バッジ (緑ドット pulse)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "待機状態の静的視覚インジケータ(client polling は別途継続)"
+    },
+    {
+      "selector": "役ヘッダ 倍率ピル '{base} × {N}倍' (data-testid=sr-result-multiplier-pill, round.multiplier>1 のみ)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.multiplier + client.HAND_PT[myHand] (base 値)",
+      "alive": true,
+      "userTask": "役ヘッダ右下で base 点と倍率を視認する"
+    },
+    {
+      "selector": "内訳行 '内訳 / base × N倍 = total点 / 役 base点 ・ 倍率 Nx' (data-testid=sr-result-breakdown-row, round.multiplier>1 のみ)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.multiplier + client.HAND_PT[myHand] + round.predictions[mySeat].points",
+      "alive": true,
+      "userTask": "倍率設問の点数内訳 (base × multiplier = total) を確認する"
+    },
+    {
+      "selector": "注記 '倍率が 1x の設問では内訳バッジは表示されません' (data-testid=sr-result-multiplier-note, 常時表示)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "倍率内訳の挙動説明 literal (1x 設問では内訳バッジが出ない旨を常時告知)"
+    }
+  ]
+}

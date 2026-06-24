@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:#c5b79c;border-radius:8px}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:'Noto Sans JP',sans-serif">
+
+  <div style="max-width:1180px;margin-bottom:30px">
+    <div style="display:flex;align-items:baseline;gap:13px;flex-wrap:wrap">
+      <h1 style="margin:0;font:700 27px/1.1 'Zilla Slab',serif;color:#2E2A24">サンレンタン — 出題「得点倍率セレクタ」</h1>
+      <span style="font:500 14px/1 'Noto Serif JP';color:#6B4F3A">設問ごとに払戻の重みをホストが設定 / モバイル 390×838</span>
+    </div>
+    <p style="margin:11px 0 0;max-width:860px;font:400 13.5px/1.8 'Noto Sans JP';color:#5a5347">
+      ホストは出題時に <b>1x / 2x / 3x / 5x / 10x</b> の倍率を選べます。倍率は<b>出題と同時にプレイヤーへ通知される公開情報</b>（秘密ではない）。正解時の払戻は <b>役の点数 × 倍率</b> で計算されます。例：サンレンタン6点 ×2倍 ＝ <b>12点</b>。初期値は 1x（毎回リセット）。
+    </p>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;padding:14px 18px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px;box-shadow:0 1px 3px rgba(70,50,30,.08);width:max-content;max-width:100%">
+      <span style="font:600 11px/1 'Noto Sans JP';color:#8A7A60;letter-spacing:.08em">役と基礎点</span>
+      <div style="width:1px;height:26px;background:#E3D4B8"></div>
+      <sc-for list="{{ yakuLegend }}" as="y" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font:700 12px 'Zilla Slab';color:#fff;background:{{ y.bg }};padding:3px 7px;border-radius:5px">{{ y.pt }}</span>
+          <span style="font:500 12px 'Noto Sans JP';color:#3a352c">{{ y.name }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ===================== FRAME 1 : ホスト 出題＋倍率 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">① ホスト出題 — この設問の重み（倍率）を選ぶ</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="出題 倍率 / ホスト出題" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#F4E7CF">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #F4E7CF;border-radius:2px"></div><div style="width:13px;height:11px;background:#F4E7CF;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#F4E7CF">‹</span>
+              <span style="font:700 15px/1 'Noto Serif JP';color:#F4E7CF">第3R の出題</span>
+              <span style="margin-left:auto;font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C56A2C;padding:4px 9px;border-radius:999px">ホスト操作卓</span>
+            </div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:14px 16px 0">
+
+            <span style="font:700 12px 'Noto Sans JP';color:#2E2A24;margin-bottom:8px">お題</span>
+            <div style="background:#FFFDF7;border:2px solid #C56A2C;border-radius:11px;padding:13px 14px;margin-bottom:16px;box-shadow:0 2px 5px rgba(70,50,30,.07)">
+              <span style="font:600 15px/1.5 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</span><span style="width:2px;height:18px;background:#C56A2C;display:inline-block;vertical-align:middle;margin-left:2px"></span>
+            </div>
+
+            <!-- ===== 新規：この設問の重み ===== -->
+            <div style="background:#FBF6EA;border:1.5px solid #E0CFAD;border-radius:13px;padding:13px 14px 14px;margin-bottom:16px;box-shadow:0 2px 5px rgba(70,50,30,.06)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px">
+                <span style="font:700 13px 'Noto Sans JP';color:#2E2A24">この設問の重み</span>
+                <span style="font:700 10px 'Noto Sans JP';color:#FFF7EA;background:#C8392F;padding:3px 8px;border-radius:999px">倍率</span>
+              </div>
+              <div style="display:flex;gap:7px;margin-bottom:11px">
+                <sc-for list="{{ multipliers }}" as="m" hint-placeholder-count="5">
+                  <div style="flex:1;text-align:center;padding:11px 0;border-radius:10px;background:{{ m.bg }};border:2px solid {{ m.bd }};box-shadow:{{ m.sh }}">
+                    <div style="font:900 18px 'Zilla Slab';color:{{ m.fg }}">{{ m.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;background:#FBEFD9;border:1px solid #ECCfa0;border-radius:9px;padding:10px 12px">
+                <span style="flex:none;font:700 15px 'Noto Sans JP';color:#C56A2C">⚖</span>
+                <span style="font:600 11px/1.55 'Noto Sans JP';color:#6B4F3A">正解時の払戻が <b style="color:#C8392F">2倍</b> で計算されます。例：サンレンタン 6点 → <b style="color:#C8392F">12点</b></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;margin-top:9px;padding:0 2px">
+                <span style="font:700 11px 'Noto Sans JP';color:#3E8E52">📣</span>
+                <span style="font:500 11px/1.5 'Noto Sans JP';color:#8A7A60">倍率は出題と同時にプレイヤーへ表示されます（秘密ではありません）</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px">
+              <span style="font:700 12px 'Noto Sans JP';color:#2E2A24">選択肢（出走）</span>
+              <span style="font:600 11px 'Noto Sans JP';color:#3E8E52">6つ</span>
+            </div>
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:7px">
+              <sc-for list="{{ choices }}" as="g" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:10px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:9px;padding:7px 11px">
+                  <div style="flex:none;width:28px;height:28px;border-radius:6px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 14px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div>
+                  <span style="font:600 13px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="flex:none;padding:13px 16px 18px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:15px;border:none;border-radius:11px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.22)">×2倍で出題する</button>
+            <p style="margin:8px 0 0;text-align:center;font:500 10px 'Noto Sans JP';color:#8A7A60">公開後にあなたの1〜3着（正解）を選びます</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 2 : プレイヤー予想＋倍率バッジ ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">② プレイヤー予想 — お題に倍率バッジが付く</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="出題 倍率 / 予想バッジ" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:#2C4F3A;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#EAF1E8">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #EAF1E8;border-radius:2px"></div><div style="width:13px;height:11px;background:#EAF1E8;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#EAF1E8">‹</span>
+              <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              <div style="margin-left:auto"><span style="font:600 11px 'Noto Sans JP';color:#CFE0D0;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:999px">部屋 #4F2A</span></div>
+            </div>
+          </div>
+
+          <!-- race banner with multiplier badge -->
+          <div style="flex:none;padding:14px 16px 12px;background:#3E6F52;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px;border-bottom:3px solid #2C4F3A">
+            <div style="position:relative;background:#FBF6EA;border-radius:10px;padding:12px 14px;box-shadow:0 4px 10px rgba(0,0,0,.2)">
+              <!-- 倍率バッジ -->
+              <div style="position:absolute;top:-13px;right:-6px;transform:rotate(7deg);display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#E2584C,#C8392F 65%,#A22C24);border:3px solid #FBF6EA;box-shadow:0 4px 9px rgba(162,44,36,.4)">
+                <span style="font:900 22px 'Zilla Slab';color:#FFF7EA;line-height:1">×2</span>
+                <span style="font:700 7px 'Noto Sans JP';color:#FBE3DF;letter-spacing:.05em">倍率</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+                <span style="font:700 12px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:5px 9px;border-radius:6px;box-shadow:0 1px 0 #9A4E1C">第3R</span>
+                <span style="font:600 11px 'Noto Sans JP';color:#3E6F52;background:#E3EFE3;padding:5px 9px;border-radius:999px">予想受付中</span>
+              </div>
+              <h2 style="margin:0 0 8px;padding-right:48px;font:700 18px/1.35 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</h2>
+              <div style="display:flex;align-items:center;gap:7px;background:#FBE3DF;border:1px solid #EBB7B1;border-radius:8px;padding:7px 10px">
+                <span style="font:700 12px 'Noto Sans JP';color:#C8392F">🔥 倍率設問</span>
+                <span style="font:600 11px 'Noto Sans JP';color:#A22C24">この設問は通常の <b>2倍</b> で採点されます</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;display:flex;align-items:center;gap:8px;padding:11px 18px 8px">
+            <span style="font:700 13px 'Noto Sans JP';color:#2E2A24">出走から1着→2着→3着を予想</span>
+            <span style="font:500 11px 'Noto Sans JP';color:#8A7A60">タップで順に指定</span>
+          </div>
+
+          <div style="flex:1;overflow:hidden;padding:0 16px;display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ choicesA }}" as="g" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:12px;background:#FBF6EA;border:1.5px solid {{ g.rowBd }};border-radius:11px;padding:9px 12px;box-shadow:0 2px 4px rgba(70,50,30,.07)">
+                <div style="flex:none;width:36px;height:36px;border-radius:8px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 18px 'Zilla Slab';color:{{ g.fg }};box-shadow:0 1px 2px rgba(0,0,0,.18)">{{ g.n }}</div>
+                <span style="font:600 15px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                <div style="margin-left:auto"><span style="font:700 13px 'Noto Sans JP';color:{{ g.badgeFg }};background:{{ g.badgeBg }};border:1.5px solid {{ g.badgeBd }};padding:6px 11px;border-radius:999px">{{ g.badge }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="flex:none;position:relative;margin:12px 14px 0;padding:13px 16px 16px;background-color:#FBF6EA;background-image:repeating-linear-gradient(60deg,rgba(62,111,82,.06) 0 2px,transparent 2px 7px),repeating-linear-gradient(-60deg,rgba(197,106,44,.05) 0 2px,transparent 2px 7px);border:1.5px solid #E0CFAD;border-top:2px dashed #C8A27C;border-radius:12px 12px 0 0;box-shadow:0 -4px 14px rgba(70,50,30,.12)">
+            <div style="position:absolute;top:-9px;left:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="position:absolute;top:-9px;right:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+              <span style="font:700 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.1em">三連単 馬券 ・ ×2倍</span>
+              <span style="font:500 10px 'Noto Sans JP';color:#8A7A60">的中なら払戻も2倍</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
+              <sc-for list="{{ ticketA }}" as="t" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                    <span style="font:700 10px 'Noto Sans JP';color:#A14A3F">{{ t.pos }}</span>
+                    <div style="width:44px;height:44px;border-radius:10px;background:{{ t.bg }};border:2.5px solid {{ t.bd }};display:flex;align-items:center;justify-content:center;font:700 22px 'Zilla Slab';color:{{ t.fg }};box-shadow:0 2px 4px rgba(0,0,0,.2)">{{ t.n }}</div>
+                  </div>
+                  <span style="font:700 17px 'Zilla Slab';color:#C56A2C">{{ t.sep }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:14px;border:none;border-radius:10px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.25)">この目で馬券を買う</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FRAME 3 : 結果＋倍率内訳 ===================== -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">③ 結果 — 払戻に倍率の内訳が出る</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="出題 倍率 / 結果内訳" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <div style="flex:none;background:#2C4F3A;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#EAF1E8">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #EAF1E8;border-radius:2px"></div><div style="width:13px;height:11px;background:#EAF1E8;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#EAF1E8">‹</span>
+              <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              <div style="margin-left:auto"><span style="font:600 11px 'Noto Sans JP';color:#CFE0D0;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:999px">部屋 #4F2A</span></div>
+            </div>
+          </div>
+
+          <!-- 正解 podium -->
+          <div style="flex:none;padding:13px 16px 16px;background:#3E6F52;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px;border-bottom:3px solid #2C4F3A">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px">
+              <span style="font:700 11px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:5px 9px;border-radius:6px;box-shadow:0 1px 0 #9A4E1C">第3R</span>
+              <span style="font:700 11px 'Noto Sans JP';color:#FFF7EA;background:#C8392F;padding:5px 9px;border-radius:999px">×2倍</span>
+              <span style="margin-left:auto;font:600 11px 'Noto Sans JP';color:#CFE0D0">結果確定</span>
+            </div>
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:9px">
+              <div style="display:flex;flex-direction:column;align-items:center;width:100px">
+                <div style="width:46px;height:46px;border-radius:11px;background:{{ truth.p2.bg }};border:2.5px solid {{ truth.p2.bd }};display:flex;align-items:center;justify-content:center;font:700 23px 'Zilla Slab';color:{{ truth.p2.fg }};box-shadow:0 3px 6px rgba(0,0,0,.3);margin-bottom:5px">{{ truth.p2.n }}</div>
+                <span style="font:600 11px 'Noto Sans JP';color:#FBF6EA;margin-bottom:5px">{{ truth.p2.name }}</span>
+                <div style="width:100%;height:56px;border-radius:8px 8px 0 0;background:linear-gradient(#EDE0C4,#D7C49E);border:1px solid #CBB489;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:6px;box-shadow:inset 0 2px 0 rgba(255,255,255,.5)"><span style="font:700 14px 'Zilla Slab';color:#7A6748">2</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;width:108px">
+                <div style="position:relative;margin-bottom:5px">
+                  <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);font:700 10px 'Noto Sans JP';color:#7A4A12;background:#F3D9A8;padding:2px 8px;border-radius:999px;white-space:nowrap">🌹 1着</div>
+                  <div style="width:56px;height:56px;border-radius:12px;background:{{ truth.p1.bg }};border:3px solid #E3B42A;display:flex;align-items:center;justify-content:center;font:700 29px 'Zilla Slab';color:{{ truth.p1.fg }};box-shadow:0 4px 8px rgba(0,0,0,.35),0 0 0 2px rgba(236,194,62,.4)">{{ truth.p1.n }}</div>
+                </div>
+                <span style="font:700 12px 'Noto Sans JP';color:#FBF6EA;margin-bottom:5px">{{ truth.p1.name }}</span>
+                <div style="width:100%;height:76px;border-radius:8px 8px 0 0;background:linear-gradient(#F6E7B8,#E6CE86);border:1px solid #D8BC74;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:7px;box-shadow:inset 0 2px 0 rgba(255,255,255,.6)"><span style="font:700 18px 'Zilla Slab';color:#9A7A2E">1</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;width:100px">
+                <div style="width:42px;height:42px;border-radius:11px;background:{{ truth.p3.bg }};border:2.5px solid {{ truth.p3.bd }};display:flex;align-items:center;justify-content:center;font:700 21px 'Zilla Slab';color:{{ truth.p3.fg }};box-shadow:0 3px 6px rgba(0,0,0,.3);margin-bottom:5px">{{ truth.p3.n }}</div>
+                <span style="font:600 11px 'Noto Sans JP';color:#FBF6EA;margin-bottom:5px">{{ truth.p3.name }}</span>
+                <div style="width:100%;height:42px;border-radius:8px 8px 0 0;background:linear-gradient(#E8D2B0,#D2B584);border:1px solid #C3A576;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:5px;box-shadow:inset 0 2px 0 rgba(255,255,255,.45)"><span style="font:700 13px 'Zilla Slab';color:#7A6748">3</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- payout ticket with breakdown -->
+          <div style="flex:none;margin:16px 16px 0;background-color:#FBF6EA;background-image:repeating-linear-gradient(60deg,rgba(62,111,82,.06) 0 2px,transparent 2px 7px),repeating-linear-gradient(-60deg,rgba(197,106,44,.05) 0 2px,transparent 2px 7px);border:1.5px solid #E0CFAD;border-radius:14px;box-shadow:0 6px 16px rgba(70,50,30,.16);overflow:hidden">
+            <div style="background:linear-gradient(#C8392F,#A22C24);padding:13px 16px;display:flex;align-items:center;gap:11px">
+              <div style="flex:none;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F6E0A0,#E3B42A 60%,#B98A1E);display:flex;align-items:center;justify-content:center;font:700 18px 'Zilla Slab';color:#7A4A12;box-shadow:0 2px 4px rgba(0,0,0,.3),inset 0 0 0 2px rgba(255,255,255,.35)">★</div>
+              <div style="line-height:1.1">
+                <div style="font:900 22px 'Noto Sans JP';color:#FFF7EA;text-shadow:0 1px 2px rgba(0,0,0,.3)">サンレンタン！</div>
+                <span style="font:600 11px 'Noto Sans JP';color:#FBE3DF">1〜3着すべて順位までぴったり</span>
+              </div>
+              <div style="margin-left:auto;text-align:center;line-height:1.05">
+                <div style="font:900 30px 'Zilla Slab';color:#FFF7EA">+12</div>
+                <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:999px;margin-top:2px"><span style="font:700 10px 'Zilla Slab';color:#FFF7EA">6 × 2倍</span></div>
+              </div>
+            </div>
+            <!-- breakdown row -->
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#FBEFD9;border-top:1px solid #ECCfa0">
+              <span style="font:700 11px 'Noto Sans JP';color:#6B4F3A">内訳</span>
+              <div style="display:flex;align-items:center;gap:7px;font:700 13px 'Zilla Slab';color:#A22C24">
+                <span>6</span><span style="color:#C56A2C">×</span><span>2倍</span><span style="color:#C56A2C">=</span><span style="font:900 16px 'Zilla Slab';color:#C8392F">12点</span>
+              </div>
+              <span style="margin-left:auto;font:500 10px 'Noto Sans JP';color:#8A7A60">役 6点 ・ 倍率 2x</span>
+            </div>
+            <div style="position:relative;padding:14px 16px 16px;border-top:2px dashed #C8A27C">
+              <div style="position:absolute;top:-9px;left:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+              <div style="position:absolute;top:-9px;right:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+              <span style="display:block;font:700 10px 'Zilla Slab';color:#8A7A60;letter-spacing:.1em;margin-bottom:10px">あなたの馬券</span>
+              <div style="display:flex;align-items:center;justify-content:center;gap:7px">
+                <sc-for list="{{ myTicket }}" as="t" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+                      <span style="font:700 9px 'Noto Sans JP';color:#A14A3F">{{ t.pos }}</span>
+                      <div style="position:relative;width:44px;height:44px;border-radius:10px;background:{{ t.bg }};border:2.5px solid {{ t.bd }};display:flex;align-items:center;justify-content:center;font:700 22px 'Zilla Slab';color:{{ t.fg }}">{{ t.n }}<span style="position:absolute;right:-6px;bottom:-6px;width:18px;height:18px;border-radius:50%;background:#3E8E52;color:#fff;font:700 11px 'Noto Sans JP';display:flex;align-items:center;justify-content:center;border:2px solid #FBF6EA">✓</span></div>
+                    </div>
+                    <span style="font:700 16px 'Zilla Slab';color:#C56A2C">{{ t.sep }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="position:absolute;right:14px;bottom:12px;transform:rotate(-13deg);border:3px solid #C8392F;color:#C8392F;font:900 15px 'Noto Sans JP';padding:4px 9px;border-radius:8px;opacity:.9;letter-spacing:.05em">的中</div>
+            </div>
+          </div>
+
+          <!-- note: 1x のときは内訳なし -->
+          <div style="flex:1;overflow:hidden;padding:14px 16px 0">
+            <div style="display:flex;align-items:flex-start;gap:9px;background:#FBF6EA;border:1px dashed #D8C6A4;border-radius:11px;padding:12px 13px">
+              <span style="flex:none;font:700 14px 'Noto Sans JP';color:#8A7A60">ℹ</span>
+              <span style="font:500 11px/1.6 'Noto Sans JP';color:#6B4F3A">倍率が <b>1x</b> の設問では内訳バッジは表示されず、役の点数がそのまま払戻になります（既存表示と完全一致）。</span>
+            </div>
+          </div>
+
+          <div style="flex:none;padding:11px 16px 16px;background:#FBF6EA;border-top:1px solid #E3D4B8;display:flex;align-items:center;gap:11px">
+            <div style="flex:1">
+              <div style="font:700 12px 'Noto Sans JP';color:#2E2A24">次のレースを待っています</div>
+              <span style="font:500 10px 'Noto Sans JP';color:#8A7A60">ホストが次のお題を公開します</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;background:#E3EFE3;border:1px solid #BFD8C2;padding:9px 13px;border-radius:10px">
+              <span style="width:8px;height:8px;border-radius:50%;background:#3E8E52;box-shadow:0 0 0 3px rgba(62,142,82,.2)"></span>
+              <span style="font:600 12px 'Noto Sans JP';color:#2C6E3E">待機中</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const C = [
+      {n:'A', name:'やきそば',     bg:'#F7F4EC', fg:'#2E2A24', bd:'#D8CDB8'},
+      {n:'B', name:'ほたて',       bg:'#2E2A24', fg:'#F7F4EC', bd:'#2E2A24'},
+      {n:'C', name:'マシュマロ',   bg:'#C8392F', fg:'#ffffff', bd:'#A22C24'},
+      {n:'D', name:'しいたけ',     bg:'#2F6FB0', fg:'#ffffff', bd:'#235487'},
+      {n:'E', name:'とうもろこし', bg:'#ECC23E', fg:'#2E2A24', bd:'#D3A626'},
+      {n:'F', name:'おにぎり',     bg:'#3E8E52', fg:'#ffffff', bd:'#2E6E3E'},
+    ];
+    const byN = n => C.find(c => c.n === n);
+
+    // 倍率セレクタ（2x 選択中）
+    const SEL = '2';
+    const multipliers = ['1','2','3','5','10'].map(v => {
+      const on = v === SEL;
+      return {
+        label: v + 'x',
+        bg: on ? '#C8392F' : '#FFFDF7',
+        fg: on ? '#FFF7EA' : '#8A6A47',
+        bd: on ? '#A22C24' : '#E0CFAD',
+        sh: on ? '0 3px 0 #7E2019,0 4px 9px rgba(162,44,36,.28)' : 'none',
+      };
+    });
+
+    const yakuLegend = [
+      { name:'サンレンタン', pt:'6', bg:'#C8392F' },
+      { name:'サンレンプク', pt:'4', bg:'#C56A2C' },
+      { name:'ニレンタン',   pt:'3', bg:'#4E6E8E' },
+      { name:'プクプク',     pt:'2', bg:'#5E8463' },
+      { name:'タン',         pt:'1', bg:'#8A7A60' },
+      { name:'ハズレ',       pt:'0', bg:'#B7A582' },
+    ];
+
+    // 予想（1着=1, 2着=2, 3着=3 → サンレンタン的中）
+    const pick = { '1着':'A', '2着':'B', '3着':'C' };
+    const assignedOf = n => Object.keys(pick).find(pos => pick[pos] === n) || null;
+    const choicesA = C.map(g => {
+      const a = assignedOf(g.n);
+      return { ...g,
+        badge: a || '指定',
+        rowBd: a ? '#C56A2C' : '#E3D4B8',
+        badgeBg: a ? '#C56A2C' : '#F1E7D3',
+        badgeFg: a ? '#FFF7EA' : '#A89472',
+        badgeBd: a ? '#9A4E1C' : '#E0CFAD',
+      };
+    });
+    const ticketA = [
+      { pos:'1着', ...byN('A'), sep:'→' },
+      { pos:'2着', ...byN('B'), sep:'→' },
+      { pos:'3着', ...byN('C'), sep:'' },
+    ];
+
+    const truth = { p1:byN('A'), p2:byN('B'), p3:byN('C') };
+    const myTicket = [
+      { pos:'1着', ...byN('A'), sep:'→' },
+      { pos:'2着', ...byN('B'), sep:'→' },
+      { pos:'3着', ...byN('C'), sep:'' },
+    ];
+
+    return { choices: C, multipliers, yakuLegend, choicesA, ticketA, truth, myTicket };
+  }
+}
+</script>
+</body>
+</html>

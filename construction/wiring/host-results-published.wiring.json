@@ -1,0 +1,104 @@
+{
+  "screen": "host-results-published",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar heading h2 '第NR 結果公開済み'",
+      "kind": "display",
+      "wiredTo": "client.barTitle (round.status='revealed' から derive)",
+      "alive": true,
+      "userTask": "現在のラウンド結果が公開済みであることを確認する"
+    },
+    {
+      "selector": "badge 'ホスト操作卓'",
+      "kind": "display",
+      "wiredTo": "client.isHost",
+      "alive": true,
+      "userTask": "ホスト権限で操作中であることを確認する"
+    },
+    {
+      "selector": "WalnutBar 卓名行 '◇ {displayRoomName}' (data-testid=sr-room-name-topbar)",
+      "kind": "display",
+      "wiredTo": "backend.Room.name (空時は '試遊卓' fallback。ホスト名は出さない)",
+      "alive": true,
+      "userTask": "対戦中の自端末で卓名を控えめに確認する"
+    },
+    {
+      "selector": "完了バナー ✓ アイコン",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "完了状態を示す静的アイコン(✓)。round.status の視覚表現として常時表示"
+    },
+    {
+      "selector": "完了バナータイトル '第{roundNo}R の払戻が完了'",
+      "kind": "display",
+      "wiredTo": "client.currentRoundNo (history.length 由来)",
+      "alive": true,
+      "userTask": "完了したラウンド番号を確認する"
+    },
+    {
+      "selector": "完了バナー subtext '正解 {answerSeq} ・ {distributedCount}人に配分'",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.answer (→ 丸数字) + rows.length",
+      "alive": true,
+      "userTask": "正解シーケンスと配分対象人数を確認する"
+    },
+    {
+      "selector": "label 'このレースの結果'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ミニランキングセクションの静的見出し"
+    },
+    {
+      "selector": "ranking row (per player)",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer + state.scores + state.round.predictions",
+      "alive": true,
+      "userTask": "各プレイヤーの順位/役/今R 増分/累積点を確認する"
+    },
+    {
+      "selector": "PlayerColorDot (per row)",
+      "kind": "display",
+      "wiredTo": "backend.RoomPlayer.color (fallback seat → 既定色)",
+      "alive": true,
+      "userTask": "プレイヤーの駒色で本人を識別する"
+    },
+    {
+      "selector": "hand badge (役名: サンレンタン / ハズレ / etc.)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.predictions[seat].hand",
+      "alive": true,
+      "userTask": "各プレイヤーが取った役を確認する"
+    },
+    {
+      "selector": "delta '+{n}' / 累積点 '{r.pts}'",
+      "kind": "display",
+      "wiredTo": "backend.state.round.predictions[seat].points + state.scores[seat]",
+      "alive": true,
+      "userTask": "今ラウンドの増分と累積点を確認する"
+    },
+    {
+      "selector": "共有 CTA card 📺 link '結果共有画面（大画面用）を開く'",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share)",
+      "alive": true,
+      "userTask": "プロジェクタ用の結果共有画面を別タブで開く"
+    },
+    {
+      "selector": "footer link '結果再表示' (aria-label='結果を再表示（共有画面を新タブで開く）')",
+      "kind": "link",
+      "wiredTo": "navigate(/rooms/{id}/share)",
+      "alive": true,
+      "userTask": "結果共有画面を新タブで再表示する"
+    },
+    {
+      "selector": "footer button '次のお題を出す' (orange CTA)",
+      "kind": "button",
+      "wiredTo": "client.handleNextRound (setForceNew(true) → 出題エディタへ遷移)",
+      "alive": true,
+      "userTask": "次ラウンドの出題エディタへ進む"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "screen": "host-room-create-initial",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/app/rooms/new/page.tsx",
+  "elements": [
+    {
+      "selector": "WalnutBar status '9:41' + 電池/通信アイコン",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "モックアップ由来の status bar 装飾。実 OS 情報は表示しない。"
+    },
+    {
+      "selector": "WalnutBar '‹' back button (aria-label='戻る')",
+      "kind": "button",
+      "wiredTo": "navigate(/browse) (low-rooms-new-unsaved-warning fix: roomName.trim().length>0 のときは window.confirm('入力中の卓名が破棄されます。よろしいですか？') で確認し、cancel 時は navigation を中止する)",
+      "alive": true,
+      "userTask": "卓作成を中断して discover/browse 画面へ戻る (未入力の卓名がある場合は確認ダイアログで silent 破棄を防ぐ)"
+    },
+    {
+      "selector": "WalnutBar title 'サンレンタン'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "現在の作品名 literal (seed-sanrentan 固定)。"
+    },
+    {
+      "selector": "badge 'ホスト操作卓'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホストモードを示す静的バッジ literal。"
+    },
+    {
+      "selector": "ホストアバター 'た' (aria-label='ホストアバター')",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ホストイニシャル装飾 (デザイン由来の固定値)。"
+    },
+    {
+      "selector": "h2 '新しい卓をひらく'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "ページ見出し literal。"
+    },
+    {
+      "selector": "text 'あなたがこのレースのホストです'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "サブタイトル literal。"
+    },
+    {
+      "selector": "label '卓の名前' (#roomNameLabel)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "input フィールドの静的ラベル literal。"
+    },
+    {
+      "selector": "input #roomName (aria-labelledby='roomNameLabel')",
+      "kind": "input",
+      "wiredTo": "backend.act('POST /api/rooms', {name})",
+      "alive": true,
+      "userTask": "卓の表示名を入力する (空ならランダム名サーバ側 fallback)"
+    },
+    {
+      "selector": "div #roomNameCounter '{nameLen}/40' + 残り表示 + truncate 警告",
+      "kind": "display",
+      "wiredTo": "client.roomName.length (+ didTruncate state: paste onPaste と typing 経路の両方で検知。typing 側は React の SyntheticEvent では拾えないため useEffect 内で raw DOM <input> に native addEventListener('beforeinput') を直接 attach し、maxLength 適用前に inputType='insertText'/'insertCompositionText' で projected 長を判定して 41 文字目入力試行を検知する)",
+      "alive": true,
+      "userTask": "卓名の残り入力可能文字数を確認し、40 文字制限超過 (paste/typing どちらでも truncate) を視認する"
+    },
+    {
+      "selector": "toggle 'リンクを知っている人が参加' (role=switch)",
+      "kind": "toggle",
+      "wiredTo": "backend.act('POST /api/rooms', {isPublic})",
+      "alive": true,
+      "userTask": "公開リンクからの参加可否を切り替える"
+    },
+    {
+      "selector": "text '途中参加もいつでもOK'",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "toggle 補足の静的説明 literal。"
+    },
+    {
+      "selector": "CTA 'この卓をひらく'",
+      "kind": "button",
+      "wiredTo": "backend.act('POST /api/rooms', {gameId,name,isPublic}) → navigate(/rooms/:id)",
+      "alive": true,
+      "userTask": "入力済みの卓名/公開設定で部屋を作成し、ホスト管理画面へ遷移する"
+    },
+    {
+      "selector": "alert #roomCreateError (role='alert', aria-live='assertive')",
+      "kind": "display",
+      "wiredTo": "client.errorMsg (POST /api/rooms 失敗時に出力: 401/403→ログイン要求 + 0.9s 後 navigate(/), 5xx/network→同画面に visible alert で retry 可能)",
+      "alive": true,
+      "userTask": "卓作成失敗の原因 (未ログイン / server エラー / network エラー) を視認し、retry または sign-in 動線へ進む"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "frameId": "host-pose-preset",
+  "pixelDiffCount": null,
+  "totalPixels": null,
+  "ratio": null,
+  "designRenderSuccess": true,
+  "implAvailable": true,
+  "files": {
+    "design": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-pose-preset.design.png",
+    "impl": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-pose-preset.impl.png",
+    "diff": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-pose-preset.diff.png"
+  },
+  "error": null
+}

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:#c5b79c;border-radius:8px}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:'Noto Sans JP',sans-serif">
+
+  <div style="max-width:1180px;margin-bottom:30px">
+    <div style="display:flex;align-items:baseline;gap:13px;flex-wrap:wrap">
+      <h1 style="margin:0;font:700 27px/1.1 'Zilla Slab',serif;color:#2E2A24">サンレンタン — 結果公開（画面共有）</h1>
+      <span style="font:500 14px/1 'Noto Serif JP';color:#6B4F3A">みんなでホストの画面を見る・大画面 / デスクトップ</span>
+    </div>
+    <p style="margin:11px 0 0;max-width:860px;font:400 13.5px/1.8 'Noto Sans JP';color:#5a5347">
+      ホストが正解を公開した瞬間、全員がこの1画面を一緒に見ます。レース確定の盛り上がりを大きく：<b>正解の着順（表彰台）</b>・<b>各自の馬券と払戻</b>・<b>累積順位</b>を一望。離れた席からも読める大きな文字に。
+    </p>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+    <div style="flex:none;width:1300px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">デスクトップ · 共有ディスプレイ（1280×800）</div>
+      <div style="background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden">
+        <div data-screen-label="結果公開 画面共有 / デスクトップ" style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F1E7D3">
+
+          <!-- top bar (host screen, shared) -->
+          <div style="flex:none;display:flex;align-items:center;gap:18px;padding:13px 26px;background:linear-gradient(#6B4F3A,#5A4226);box-shadow:inset 0 -2px 4px rgba(0,0,0,.22)">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div style="width:26px;height:26px;border-radius:7px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#ECC23E;border-radius:50%"></div><div style="background:#C8392F;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div>
+              <span style="font:700 17px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;background:rgba(0,0,0,.2);padding:6px 12px;border-radius:999px">
+              <span style="width:9px;height:9px;border-radius:50%;background:#E05B4E;box-shadow:0 0 0 3px rgba(224,91,78,.3)"></span>
+              <span style="font:700 12px 'Noto Sans JP';color:#F4E7CF">画面共有中 ・ ホストの画面</span>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+              <span style="font:600 13px 'Noto Sans JP';color:#EAD9BC">たけの試遊卓</span>
+              <span style="font:700 12px 'Zilla Slab';color:#F4E7CF;background:rgba(255,255,255,.12);padding:6px 12px;border-radius:8px;letter-spacing:.08em">部屋 #4F2A</span>
+            </div>
+          </div>
+
+          <!-- felt stage -->
+          <div style="flex:1;display:flex;min-height:0;background:#3E6F52;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:6px 6px,8px 8px">
+
+            <!-- LEFT : reveal + payouts -->
+            <div style="flex:1.85;display:flex;flex-direction:column;padding:24px 26px;min-width:0">
+
+              <!-- お題 + race -->
+              <div style="flex:none;display:flex;align-items:center;gap:12px;margin-bottom:6px">
+                <span style="font:700 14px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:7px 12px;border-radius:7px;box-shadow:0 1px 0 #9A4E1C">第3R</span>
+                <span style="font:700 13px 'Noto Sans JP';color:#2C4F3A;background:#F3D9A8;padding:7px 12px;border-radius:999px">結果確定</span>
+                <span style="font:600 14px 'Noto Sans JP';color:#FBF6EA">BBQで肉以外に焼きたいのは？</span>
+              </div>
+              <div style="flex:none;text-align:center;margin:4px 0 12px">
+                <span style="font:900 22px 'Noto Sans JP';color:#F4E7CF;letter-spacing:.14em">— 正 解 発 表 —</span>
+              </div>
+
+              <!-- podium on turf -->
+              <div style="flex:none;position:relative;border-radius:14px;background:#3E8E52;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 56px),repeating-linear-gradient(rgba(0,0,0,.05) 0 11px,rgba(255,255,255,.03) 11px 22px);border:1px solid #2C6E3E;box-shadow:inset 0 2px 8px rgba(0,0,0,.2);padding:18px 18px 0;margin-bottom:18px">
+                <div style="position:absolute;top:12px;left:14px;display:flex;flex-direction:column;gap:3px"><div style="width:6px;height:22px;background:repeating-linear-gradient(#fff 0 6px,#2E2A24 6px 12px)"></div></div>
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:20px">
+                  <!-- 2着 -->
+                  <div style="display:flex;flex-direction:column;align-items:center;width:184px">
+                    <div style="width:64px;height:64px;border-radius:14px;background:{{ truth.2.bg }};border:3px solid {{ truth.2.bd }};display:flex;align-items:center;justify-content:center;font:700 34px 'Zilla Slab';color:{{ truth.2.fg }};box-shadow:0 4px 8px rgba(0,0,0,.32);margin-bottom:8px">{{ truth.2.n }}</div>
+                    <span style="font:700 17px 'Noto Serif JP';color:#FBF6EA;margin-bottom:8px">{{ truth.2.name }}</span>
+                    <div style="width:100%;height:78px;border-radius:10px 10px 0 0;background:linear-gradient(#EDE0C4,#D7C49E);border:1px solid #CBB489;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;box-shadow:inset 0 3px 0 rgba(255,255,255,.5)"><span style="font:700 26px 'Zilla Slab';color:#7A6748">2</span></div>
+                  </div>
+                  <!-- 1着 -->
+                  <div style="display:flex;flex-direction:column;align-items:center;width:200px">
+                    <div style="position:relative;margin-bottom:8px">
+                      <div style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+                        <div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F6E0A0,#E3B42A 60%,#B98A1E);display:flex;align-items:center;justify-content:center;font:700 16px 'Zilla Slab';color:#7A4A12;box-shadow:0 2px 4px rgba(0,0,0,.3),inset 0 0 0 2px rgba(255,255,255,.35)">★</div>
+                        <div style="display:flex;gap:18px;margin-top:-4px"><div style="width:7px;height:16px;background:#C8392F;transform:rotate(18deg)"></div><div style="width:7px;height:16px;background:#E3B42A;transform:rotate(-18deg)"></div></div>
+                      </div>
+                      <div style="width:80px;height:80px;border-radius:16px;background:{{ truth.1.bg }};border:4px solid #E3B42A;display:flex;align-items:center;justify-content:center;font:700 42px 'Zilla Slab';color:{{ truth.1.fg }};box-shadow:0 6px 12px rgba(0,0,0,.36),0 0 0 3px rgba(236,194,62,.35)">{{ truth.1.n }}</div>
+                    </div>
+                    <span style="font:700 20px 'Noto Serif JP';color:#FBF6EA;margin-bottom:8px">{{ truth.1.name }}</span>
+                    <div style="width:100%;height:110px;border-radius:10px 10px 0 0;background:linear-gradient(#F6E7B8,#E6CE86);border:1px solid #D8BC74;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:12px;box-shadow:inset 0 3px 0 rgba(255,255,255,.6)"><span style="font:700 34px 'Zilla Slab';color:#9A7A2E">1</span></div>
+                  </div>
+                  <!-- 3着 -->
+                  <div style="display:flex;flex-direction:column;align-items:center;width:184px">
+                    <div style="width:58px;height:58px;border-radius:13px;background:{{ truth.3.bg }};border:3px solid {{ truth.3.bd }};display:flex;align-items:center;justify-content:center;font:700 30px 'Zilla Slab';color:{{ truth.3.fg }};box-shadow:0 4px 8px rgba(0,0,0,.32);margin-bottom:8px">{{ truth.3.n }}</div>
+                    <span style="font:700 17px 'Noto Serif JP';color:#FBF6EA;margin-bottom:8px">{{ truth.3.name }}</span>
+                    <div style="width:100%;height:58px;border-radius:10px 10px 0 0;background:linear-gradient(#E8D2B0,#D2B584);border:1px solid #C3A576;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;box-shadow:inset 0 3px 0 rgba(255,255,255,.45)"><span style="font:700 22px 'Zilla Slab';color:#7A6748">3</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- payouts per player -->
+              <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+                  <span style="font:700 15px 'Noto Serif JP';color:#FBF6EA">このレースの払戻</span>
+                  <span style="font:500 12px 'Noto Sans JP';color:#CFE0D0">成立は最高位の役ひとつだけ</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <sc-for list="{{ payouts }}" as="p" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:13px;background:{{ p.cardBg }};border:{{ p.cardBd }};border-radius:12px;padding:11px 14px;box-shadow:0 3px 7px rgba(0,0,0,.14)">
+                      <div style="flex:none;width:40px;height:40px;border-radius:50%;background:{{ p.color }};display:flex;align-items:center;justify-content:center;font:700 17px 'Noto Sans JP';color:#fff;box-shadow:inset 0 -2px 3px rgba(0,0,0,.22)">{{ p.initial }}</div>
+                      <div style="min-width:0">
+                        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+                          <span style="font:700 15px 'Noto Sans JP';color:#2E2A24">{{ p.name }}</span>
+                          <span style="font:700 11px 'Noto Sans JP';color:{{ p.winFg }};background:{{ p.winBg }};padding:{{ p.winPad }};border-radius:999px">{{ p.winLabel }}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:5px">
+                          <sc-for list="{{ p.pick }}" as="t" hint-placeholder-count="3">
+                            <div style="display:flex;align-items:center;gap:5px">
+                              <div style="width:26px;height:26px;border-radius:6px;background:{{ t.bg }};border:1.5px solid {{ t.bd }};display:flex;align-items:center;justify-content:center;font:700 14px 'Zilla Slab';color:{{ t.fg }}">{{ t.n }}</div>
+                              <span style="font:700 12px 'Zilla Slab';color:#A89472">{{ t.sep }}</span>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </div>
+                      <div style="margin-left:auto;text-align:right;line-height:1.05">
+                        <div style="font:700 12px 'Noto Sans JP';color:{{ p.yakuFg }};background:{{ p.yakuBg }};padding:4px 9px;border-radius:7px;margin-bottom:4px;white-space:nowrap">{{ p.yaku }}</div>
+                        <span style="font:900 22px 'Zilla Slab';color:#2E2A24">{{ p.pts }}</span>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT : leaderboard -->
+            <div style="flex:1;display:flex;flex-direction:column;padding:24px 24px;background:rgba(44,79,58,.45);border-left:3px solid #2C4F3A;min-width:0">
+              <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:16px">
+                <span style="font:700 19px 'Noto Serif JP';color:#FBF6EA">累積順位</span>
+                <span style="font:500 12px 'Noto Sans JP';color:#CFE0D0">3レース終了</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <sc-for list="{{ ranking }}" as="r" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:13px;background:{{ r.rowBg }};border:{{ r.rowBd }};border-radius:13px;padding:13px 15px;box-shadow:0 3px 7px rgba(0,0,0,.16)">
+                    <span style="flex:none;width:34px;height:34px;border-radius:50%;background:{{ r.rankBg }};color:{{ r.rankFg }};font:700 18px 'Zilla Slab';display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -2px 3px rgba(0,0,0,.18)">{{ r.rank }}</span>
+                    <div style="flex:none;width:32px;height:32px;border-radius:50%;background:{{ r.color }};display:flex;align-items:center;justify-content:center;font:700 14px 'Noto Sans JP';color:#fff;box-shadow:inset 0 -2px 3px rgba(0,0,0,.22)">{{ r.initial }}</div>
+                    <div style="min-width:0;line-height:1.2">
+                      <span style="font:700 16px 'Noto Sans JP';color:#2E2A24">{{ r.name }}</span>
+                      <div style="font:600 11px 'Noto Sans JP';color:{{ r.tagFg }}">{{ r.tag }}</div>
+                    </div>
+                    <div style="margin-left:auto;text-align:right;line-height:1">
+                      <div style="font:900 26px 'Zilla Slab';color:#2E2A24">{{ r.pts }}</div>
+                      <span style="font:600 12px 'Noto Sans JP';color:#3E8E52">{{ r.delta }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:auto;display:flex;align-items:center;gap:9px;padding:12px 14px;background:rgba(0,0,0,.18);border-radius:11px">
+                <span style="font:700 14px 'Noto Sans JP';color:#F3D9A8">♘</span>
+                <span style="font:600 12px/1.5 'Noto Sans JP';color:#EAD9BC">次のレースはホストも予想に参加します</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- footer : host control hint -->
+          <div style="flex:none;display:flex;align-items:center;gap:14px;padding:13px 26px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="display:flex;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#C56A2C"></span><span style="width:7px;height:7px;border-radius:50%;background:#C56A2C;opacity:.5"></span><span style="width:7px;height:7px;border-radius:50%;background:#C56A2C;opacity:.25"></span></span>
+              <span style="font:600 14px 'Noto Sans JP';color:#6B4F3A">ホストが次のお題を準備しています…</span>
+            </div>
+            <span style="margin-left:auto;font:500 12px 'Noto Sans JP';color:#8A7A60">プレイヤーは自分の端末で次の予想を待ちましょう</span>
+            <span style="font:700 13px 'Noto Sans JP';color:#fff;background:linear-gradient(#8A6A47,#6B4F3A);padding:9px 16px;border-radius:9px;box-shadow:0 1px 0 #5A412E">ホスト操作：次のお題を出す</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const C = {
+      '1':{n:'1', name:'やきそば',     bg:'#F7F4EC', fg:'#2E2A24', bd:'#D8CDB8'},
+      '2':{n:'2', name:'ほたて',       bg:'#2E2A24', fg:'#F7F4EC', bd:'#2E2A24'},
+      '3':{n:'3', name:'マシュマロ',   bg:'#C8392F', fg:'#ffffff', bd:'#A22C24'},
+      '4':{n:'4', name:'しいたけ',     bg:'#2F6FB0', fg:'#ffffff', bd:'#235487'},
+      '5':{n:'5', name:'とうもろこし', bg:'#ECC23E', fg:'#2E2A24', bd:'#D3A626'},
+      '6':{n:'6', name:'おにぎり',     bg:'#3E8E52', fg:'#ffffff', bd:'#2E6E3E'},
+    };
+    // truth: 1着①, 2着②, 3着③
+    const truth = { '1': C['1'], '2': C['2'], '3': C['3'] };
+    const gates = arr => arr.map((n,i) => ({ ...C[n], sep: i < arr.length-1 ? '→' : '' }));
+
+    const YK = {
+      santan:  { yaku:'サンレンタン', yakuBg:'#C8392F', yakuFg:'#FFF7EA' },
+      sanpuku: { yaku:'サンレンプク', yakuBg:'#E0A24E', yakuFg:'#5A3210' },
+      nitan:   { yaku:'ニレンタン',   yakuBg:'#4E6E8E', yakuFg:'#FFF7EA' },
+      tan:     { yaku:'タン',         yakuBg:'#EFE2C6', yakuFg:'#6B4F3A' },
+    };
+    const payouts = [
+      { name:'チームたぬき', initial:'た', color:'#B05A4E', pick:gates(['1','2','3']), ...YK.santan,  pts:'+6', win:true,
+        winLabel:'レース勝者', winFg:'#FFF7EA', winBg:'#C8392F', winPad:'3px 8px', cardBg:'#FFF6E8', cardBd:'2.5px solid #E3B42A' },
+      { name:'きつね組',     initial:'き', color:'#C9A24B', pick:gates(['2','1','3']), ...YK.sanpuku, pts:'+4', win:false,
+        winLabel:'', winFg:'transparent', winBg:'transparent', winPad:'0', cardBg:'#FBF6EA', cardBd:'1px solid #E3D4B8' },
+      { name:'ふくろう亭',   initial:'ふ', color:'#4E6E8E', pick:gates(['1','2','4']), ...YK.nitan,   pts:'+3', win:false,
+        winLabel:'', winFg:'transparent', winBg:'transparent', winPad:'0', cardBg:'#FBF6EA', cardBd:'1px solid #E3D4B8' },
+      { name:'はりねずみ',   initial:'は', color:'#5E8463', pick:gates(['1','4','5']), ...YK.tan,     pts:'+1', win:false,
+        winLabel:'', winFg:'transparent', winBg:'transparent', winPad:'0', cardBg:'#FBF6EA', cardBd:'1px solid #E3D4B8' },
+    ];
+
+    const R = (rank,name,initial,color,pts,delta,me,host) => ({
+      rank:String(rank), name, initial, color, pts:String(pts), delta:'+'+delta,
+      rowBg: me ? '#FFF6E8' : '#FBF6EA',
+      rowBd: me ? '2.5px solid #E3B42A' : '1px solid #E3D4B8',
+      rankBg: rank===1 ? '#E3B42A' : (rank===2 ? '#C4C0B4' : (rank===3 ? '#C8956A' : '#E0CFAD')),
+      rankFg: rank<=3 ? '#FFF' : '#8A7A60',
+      tag: host ? 'ホスト・出題者' : '',
+      tagFg: host ? '#8A7A60' : 'transparent',
+    });
+    const ranking = [
+      R(1,'チームたぬき','た','#B05A4E',14,6,true,false),
+      R(2,'きつね組','き','#C9A24B',11,4,false,false),
+      R(3,'ふくろう亭','ふ','#4E6E8E',9,3,false,false),
+      R(4,'こぐま','こ','#6B4F3A',7,0,false,true),
+      R(5,'はりねずみ','は','#5E8463',5,1,false,false),
+    ];
+
+    return { truth, payouts, ranking };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0}
+  ::-webkit-scrollbar{height:8px;width:8px}
+  ::-webkit-scrollbar-thumb{background:#c5b79c;border-radius:8px}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:'Noto Sans JP',sans-serif">
+
+  <!-- intro / system -->
+  <div style="max-width:1180px;margin-bottom:30px">
+    <div style="display:flex;align-items:baseline;gap:13px;flex-wrap:wrap">
+      <h1 style="margin:0;font:700 27px/1.1 'Zilla Slab',serif;color:#2E2A24">サンレンタン — 画面3「予想受付中」</h1>
+      <span style="font:500 14px/1 'Noto Serif JP';color:#6B4F3A">プレイヤーが 1着→2着→3着 を予想して馬券を買う・モバイル3レイアウト</span>
+    </div>
+    <p style="margin:11px 0 0;max-width:820px;font:400 13.5px/1.8 'Noto Sans JP';color:#5a5347">
+      競馬の<b>枠番カラー</b>を選択肢に割り当て、三連単の予想がそのまま「③→①→⑤」の馬券になる構造。緑のターフ＝フェルト卓、馬券＝紙のチケット（ミシン目・地紋）。ホスト確定までは何度でも買い直せます。
+    </p>
+    <!-- gate color legend -->
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;padding:14px 18px;background:#FBF6EA;border:1px solid #E3D4B8;border-radius:10px;box-shadow:0 1px 3px rgba(70,50,30,.08);width:max-content;max-width:100%">
+      <span style="font:600 11px/1 'Noto Sans JP';color:#8A7A60;letter-spacing:.08em">枠番カラー（選択肢＝出走馬）</span>
+      <div style="width:1px;height:26px;background:#E3D4B8"></div>
+      <sc-for list="{{ choices }}" as="g" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:7px">
+          <div style="width:26px;height:26px;border-radius:6px;background:{{ g.bg }};border:1.5px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 14px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div>
+          <span style="font:500 12px 'Noto Sans JP';color:#3a352c">{{ g.name }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ============================================================= -->
+    <!-- LAYOUT A : 馬券マークシート式                                  -->
+    <!-- ============================================================= -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">A · 馬券マークシート式 — 一覧から順に印をつける</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面3 予想受付 / A" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <!-- status + felt app bar -->
+          <div style="flex:none;background:#2C4F3A;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#EAF1E8">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #EAF1E8;border-radius:2px"></div><div style="width:13px;height:11px;background:#EAF1E8;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#EAF1E8">‹</span>
+              <div style="display:flex;align-items:center;gap:7px">
+                <div style="width:22px;height:22px;border-radius:6px;background:#3E6F52;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:4px"><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div><div style="background:#F1E7D3;border-radius:50%"></div></div>
+                <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              </div>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:7px">
+                <span style="font:600 11px 'Noto Sans JP';color:#CFE0D0;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:999px">部屋 #4F2A</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- race banner -->
+          <div style="flex:none;padding:14px 16px 12px;background:#3E6F52;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px;border-bottom:3px solid #2C4F3A">
+            <div style="background:#FBF6EA;border-radius:10px;padding:12px 14px;box-shadow:0 4px 10px rgba(0,0,0,.2)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+                <span style="font:700 12px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:5px 9px;border-radius:6px;box-shadow:0 1px 0 #9A4E1C">第3R</span>
+                <span style="font:600 11px 'Noto Sans JP';color:#3E6F52;background:#E3EFE3;padding:5px 9px;border-radius:999px">予想受付中</span>
+                <span style="margin-left:auto;white-space:nowrap;font:500 11px 'Noto Sans JP';color:#A14A3F">⏳ ホスト確定待ち</span>
+              </div>
+              <h2 style="margin:0;font:700 18px/1.35 'Noto Serif JP';color:#2E2A24">BBQで肉以外に焼きたいのは？</h2>
+              <span style="font:500 11px 'Noto Sans JP';color:#8A7A60">出題 ホスト・たけ</span>
+            </div>
+          </div>
+
+          <!-- instruction -->
+          <div style="flex:none;display:flex;align-items:center;gap:8px;padding:11px 18px 8px">
+            <span style="font:700 13px 'Noto Sans JP';color:#2E2A24">出走から1着→2着→3着を予想</span>
+            <span style="font:500 11px 'Noto Sans JP';color:#8A7A60">タップで順に指定</span>
+          </div>
+
+          <!-- choices list -->
+          <div style="flex:1;overflow:hidden;padding:0 16px;display:flex;flex-direction:column;gap:9px">
+            <sc-for list="{{ choicesA }}" as="g" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:12px;background:#FBF6EA;border:1.5px solid {{ g.rowBd }};border-radius:11px;padding:10px 12px;box-shadow:0 2px 4px rgba(70,50,30,.07)">
+                <div style="flex:none;width:38px;height:38px;border-radius:8px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 19px 'Zilla Slab';color:{{ g.fg }};box-shadow:0 1px 2px rgba(0,0,0,.18)">{{ g.n }}</div>
+                <span style="font:600 15px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                <div style="margin-left:auto">
+                  <span style="font:700 13px 'Noto Sans JP';color:{{ g.badgeFg }};background:{{ g.badgeBg }};border:1.5px solid {{ g.badgeBd }};padding:6px 11px;border-radius:999px">{{ g.badge }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- bet slip (馬券) -->
+          <div style="flex:none;position:relative;margin:12px 14px 0;padding:14px 16px 16px;background-color:#FBF6EA;background-image:repeating-linear-gradient(60deg,rgba(62,111,82,.06) 0 2px,transparent 2px 7px),repeating-linear-gradient(-60deg,rgba(197,106,44,.05) 0 2px,transparent 2px 7px);border:1.5px solid #E0CFAD;border-top:2px dashed #C8A27C;border-radius:12px 12px 0 0;box-shadow:0 -4px 14px rgba(70,50,30,.12)">
+            <div style="position:absolute;top:-9px;left:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="position:absolute;top:-9px;right:-9px;width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font:700 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.1em">三連単 馬券</span>
+              <span style="font:500 10px 'Noto Sans JP';color:#8A7A60">確定まで買い直し可</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:13px">
+              <sc-for list="{{ ticketA }}" as="t" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                    <span style="font:700 10px 'Noto Sans JP';color:#A14A3F">{{ t.pos }}</span>
+                    <div style="width:46px;height:46px;border-radius:10px;background:{{ t.bg }};border:2.5px solid {{ t.bd }};display:flex;align-items:center;justify-content:center;font:700 24px 'Zilla Slab';color:{{ t.fg }};box-shadow:0 2px 4px rgba(0,0,0,.2)">{{ t.n }}</div>
+                  </div>
+                  <span style="font:700 18px 'Zilla Slab';color:{{ t.arrow }}">{{ t.sep }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:14px;border:none;border-radius:10px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.25)">この目で馬券を買う</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- LAYOUT B : ターフ＆表彰台式                                     -->
+    <!-- ============================================================= -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">B · ターフ＆表彰台式 — 走路のゲートから台に乗せる</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面3 予想受付 / B" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <!-- status + app bar -->
+          <div style="flex:none;background:#2C4F3A;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#EAF1E8">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #EAF1E8;border-radius:2px"></div><div style="width:13px;height:11px;background:#EAF1E8;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#EAF1E8">‹</span>
+              <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              <div style="margin-left:auto"><span style="font:600 11px 'Noto Sans JP';color:#CFE0D0;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:999px">部屋 #4F2A</span></div>
+            </div>
+          </div>
+
+          <!-- お題 board -->
+          <div style="flex:none;padding:13px 16px;background:#3E6F52;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px;border-bottom:3px solid #2C4F3A">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+              <span style="font:700 12px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:5px 9px;border-radius:6px;box-shadow:0 1px 0 #9A4E1C">第3R</span>
+              <span style="font:600 12px 'Noto Sans JP';color:#FBF6EA">BBQで肉以外に焼きたいのは？</span>
+            </div>
+            <!-- podium -->
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:9px">
+              <!-- 2着 -->
+              <div style="display:flex;flex-direction:column;align-items:center;width:96px">
+                <div style="width:50px;height:50px;border-radius:11px;background:{{ podB.2.bg }};border:2.5px solid {{ podB.2.bd }};display:flex;align-items:center;justify-content:center;font:700 26px 'Zilla Slab';color:{{ podB.2.fg }};box-shadow:0 3px 6px rgba(0,0,0,.3);margin-bottom:6px">{{ podB.2.n }}</div>
+                <div style="width:100%;height:62px;border-radius:8px 8px 0 0;background:linear-gradient(#EDE0C4,#D7C49E);border:1px solid #CBB489;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:7px;box-shadow:inset 0 2px 0 rgba(255,255,255,.5)"><span style="font:700 14px 'Zilla Slab';color:#7A6748">2</span></div>
+              </div>
+              <!-- 1着 -->
+              <div style="display:flex;flex-direction:column;align-items:center;width:104px">
+                <div style="position:relative;margin-bottom:6px">
+                  <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font:700 11px 'Noto Sans JP';color:#7A4A12;background:#F3D9A8;padding:2px 8px;border-radius:999px;white-space:nowrap">🌹 本命</div>
+                  <div style="width:58px;height:58px;border-radius:12px;background:{{ podB.1.bg }};border:3px solid #E3B42A;display:flex;align-items:center;justify-content:center;font:700 30px 'Zilla Slab';color:{{ podB.1.fg }};box-shadow:0 4px 8px rgba(0,0,0,.35),0 0 0 2px rgba(236,194,62,.4)">{{ podB.1.n }}</div>
+                </div>
+                <div style="width:100%;height:84px;border-radius:8px 8px 0 0;background:linear-gradient(#F6E7B8,#E6CE86);border:1px solid #D8BC74;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;box-shadow:inset 0 2px 0 rgba(255,255,255,.6)"><span style="font:700 18px 'Zilla Slab';color:#9A7A2E">1</span></div>
+              </div>
+              <!-- 3着 -->
+              <div style="display:flex;flex-direction:column;align-items:center;width:96px">
+                <div style="width:46px;height:46px;border-radius:11px;background:{{ podB.3.bg }};border:2.5px solid {{ podB.3.bd }};display:flex;align-items:center;justify-content:center;font:700 23px 'Zilla Slab';color:{{ podB.3.fg }};box-shadow:0 3px 6px rgba(0,0,0,.3);margin-bottom:6px">{{ podB.3.n }}</div>
+                <div style="width:100%;height:48px;border-radius:8px 8px 0 0;background:linear-gradient(#E8D2B0,#D2B584);border:1px solid #C3A576;border-bottom:none;display:flex;align-items:flex-start;justify-content:center;padding-top:6px;box-shadow:inset 0 2px 0 rgba(255,255,255,.45)"><span style="font:700 13px 'Zilla Slab';color:#7A6748">3</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- turf with gates -->
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:13px 16px 0">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="font:700 13px 'Noto Sans JP';color:#2E2A24">出走ゲート</span>
+              <span style="font:500 11px 'Noto Sans JP';color:#8A7A60">タップで台へ / もう一度で取消</span>
+            </div>
+            <div style="flex:1;border-radius:12px;overflow:hidden;background:#3E8E52;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 44px),repeating-linear-gradient(rgba(0,0,0,.05) 0 9px,rgba(255,255,255,.03) 9px 18px);border:1px solid #2C6E3E;box-shadow:inset 0 2px 6px rgba(0,0,0,.18);padding:12px 10px">
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ choicesB }}" as="g" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:11px;background:rgba(251,246,234,.96);border-radius:10px;padding:8px 11px;box-shadow:0 2px 4px rgba(0,0,0,.18);opacity:{{ g.op }}">
+                    <div style="flex:none;width:34px;height:34px;border-radius:7px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 17px 'Zilla Slab';color:{{ g.fg }}">{{ g.n }}</div>
+                    <span style="font:600 14px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                    <span style="margin-left:auto;font:700 12px 'Noto Sans JP';color:{{ g.tagFg }}">{{ g.tag }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- submit bar -->
+          <div style="flex:none;padding:12px 16px 16px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font:600 12px 'Noto Sans JP';color:#8A7A60">現在の馬券</span>
+              <span style="font:700 16px 'Zilla Slab';color:#2E2A24">③ → ① → <span style="color:#B7A582">?</span></span>
+            </div>
+            <button style="width:100%;background:linear-gradient(#9C9A93,#7E7C75);color:#fff;font:900 16px 'Noto Sans JP';padding:14px;border:none;border-radius:10px;box-shadow:0 3px 0 #5F5D57">3着を選ぶと購入できます</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- LAYOUT C : 馬券スリップ・カード式                               -->
+    <!-- ============================================================= -->
+    <div style="flex:none;width:390px">
+      <div style="font:600 13px/1 'Noto Sans JP';color:#4a4034;margin-bottom:12px">C · スリップ常時表示式 — 上に馬券、下のカードを差し込む</div>
+      <div style="background:#1c1712;border-radius:38px;padding:11px;box-shadow:0 12px 32px rgba(0,0,0,.28)">
+        <div data-screen-label="画面3 予想受付 / C" style="position:relative;border-radius:28px;overflow:hidden;background:#F1E7D3;height:838px;display:flex;flex-direction:column">
+
+          <!-- status + app bar -->
+          <div style="flex:none;background:#2C4F3A;background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.2px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:5px 5px,7px 7px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 22px 4px;color:#EAF1E8">
+              <span style="font:700 13px 'Noto Sans JP'">9:41</span>
+              <div style="display:flex;gap:6px;align-items:center"><div style="width:16px;height:9px;border:1.5px solid #EAF1E8;border-radius:2px"></div><div style="width:13px;height:11px;background:#EAF1E8;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:6px 16px 13px">
+              <span style="font:700 19px/1 'Noto Sans JP';color:#EAF1E8">‹</span>
+              <span style="font:700 16px/1 'Zilla Slab',serif;color:#F4E7CF">サンレンタン</span>
+              <div style="margin-left:auto"><span style="font:600 11px 'Noto Sans JP';color:#CFE0D0;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:999px">部屋 #4F2A</span></div>
+            </div>
+          </div>
+
+          <!-- お題 strip -->
+          <div style="flex:none;padding:11px 16px;background:#3E6F52;border-bottom:3px solid #2C4F3A">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font:700 11px/1 'Zilla Slab';color:#fff;background:#C56A2C;padding:5px 8px;border-radius:6px">第3R</span>
+              <span style="font:600 13px 'Noto Sans JP';color:#FBF6EA;line-height:1.3">BBQで肉以外に焼きたいのは？</span>
+            </div>
+          </div>
+
+          <!-- bet slip (always-on, top) -->
+          <div style="flex:none;margin:14px 16px 4px;position:relative;padding:14px 14px 16px;background-color:#FBF6EA;background-image:repeating-linear-gradient(60deg,rgba(62,111,82,.06) 0 2px,transparent 2px 7px),repeating-linear-gradient(-60deg,rgba(197,106,44,.05) 0 2px,transparent 2px 7px);border:1.5px solid #E0CFAD;border-radius:12px;box-shadow:0 4px 12px rgba(70,50,30,.12)">
+            <div style="position:absolute;top:50%;left:-9px;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="position:absolute;top:50%;right:-9px;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#F1E7D3"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+              <span style="font:700 11px 'Zilla Slab';color:#8A7A60;letter-spacing:.1em">三連単 馬券</span>
+              <span style="font:600 10px 'Noto Sans JP';color:#3E6F52;background:#E3EFE3;padding:4px 8px;border-radius:999px">あと1つで完成</span>
+            </div>
+            <div style="display:flex;align-items:stretch;gap:8px">
+              <sc-for list="{{ slotsC }}" as="s" hint-placeholder-count="3">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:9px 4px;border-radius:10px;background:{{ s.slotBg }};border:2px {{ s.slotBorderStyle }} {{ s.slotBd }}">
+                  <span style="font:700 10px 'Noto Sans JP';color:{{ s.posFg }}">{{ s.pos }}</span>
+                  <div style="width:44px;height:44px;border-radius:9px;background:{{ s.bg }};border:2px solid {{ s.bd }};display:flex;align-items:center;justify-content:center;font:700 22px 'Zilla Slab';color:{{ s.fg }}">{{ s.n }}</div>
+                  <span style="font:600 10px 'Noto Sans JP';color:#5a5347">{{ s.name }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:none;text-align:center;padding:2px 0 8px"><span style="font:500 11px 'Noto Sans JP';color:#8A7A60">↓ 下のカードをタップして枠に入れる</span></div>
+
+          <!-- choice cards grid -->
+          <div style="flex:1;overflow:hidden;padding:0 16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+              <sc-for list="{{ choicesC }}" as="g" hint-placeholder-count="6">
+                <div style="position:relative;background:#FBF6EA;border:1.5px solid {{ g.cardBd }};border-radius:12px;padding:12px;box-shadow:0 2px 5px rgba(70,50,30,.08);overflow:hidden;opacity:{{ g.op }}">
+                  <div style="position:absolute;top:0;left:0;width:100%;height:5px;background:{{ g.bd }}"></div>
+                  <div style="display:flex;align-items:center;gap:9px;margin-top:3px">
+                    <div style="flex:none;width:38px;height:38px;border-radius:8px;background:{{ g.bg }};border:2px solid {{ g.bd }};display:flex;align-items:center;justify-content:center;font:700 19px 'Zilla Slab';color:{{ g.fg }};box-shadow:0 1px 2px rgba(0,0,0,.16)">{{ g.n }}</div>
+                    <span style="font:600 14px 'Noto Sans JP';color:#2E2A24">{{ g.name }}</span>
+                  </div>
+                  <div style="margin-top:10px;text-align:center;font:700 12px 'Noto Sans JP';color:{{ g.stateFg }};background:{{ g.stateBg }};border-radius:7px;padding:6px">{{ g.state }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- submit -->
+          <div style="flex:none;padding:12px 16px 16px;background:#FBF6EA;border-top:1px solid #E3D4B8">
+            <button style="width:100%;background:linear-gradient(#E0A24E,#C56A2C);color:#FFF7EA;font:900 16px 'Noto Sans JP';padding:14px;border:none;border-radius:10px;box-shadow:0 3px 0 #9A4E1C,0 5px 12px rgba(0,0,0,.25)">馬券を買う</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const C = [
+      {n:'1', name:'やきそば',     bg:'#F7F4EC', fg:'#2E2A24', bd:'#D8CDB8'},
+      {n:'2', name:'ほたて',       bg:'#2E2A24', fg:'#F7F4EC', bd:'#2E2A24'},
+      {n:'3', name:'マシュマロ',   bg:'#C8392F', fg:'#ffffff', bd:'#A22C24'},
+      {n:'4', name:'しいたけ',     bg:'#2F6FB0', fg:'#ffffff', bd:'#235487'},
+      {n:'5', name:'とうもろこし', bg:'#ECC23E', fg:'#2E2A24', bd:'#D3A626'},
+      {n:'6', name:'おにぎり',     bg:'#3E8E52', fg:'#ffffff', bd:'#2E6E3E'},
+    ];
+    const byN = n => C.find(c => c.n === n);
+    // selection: 1着=3, 2着=1, 3着=5
+    const pick = { '1着':'3', '2着':'1', '3着':'5' };
+    const assignedOf = n => Object.keys(pick).find(pos => pick[pos] === n) || null;
+
+    // Layout A — list with assignment badges
+    const choicesA = C.map(g => {
+      const a = assignedOf(g.n);
+      return { ...g,
+        badge: a || '指定',
+        rowBd: a ? '#C56A2C' : '#E3D4B8',
+        badgeBg: a ? '#C56A2C' : '#F1E7D3',
+        badgeFg: a ? '#FFF7EA' : '#A89472',
+        badgeBd: a ? '#9A4E1C' : '#E0CFAD',
+      };
+    });
+    const ticketA = [
+      { pos:'1着', ...byN('3'), sep:'→', arrow:'#C56A2C' },
+      { pos:'2着', ...byN('1'), sep:'→', arrow:'#C56A2C' },
+      { pos:'3着', ...byN('5'), sep:'',  arrow:'#C56A2C' },
+    ];
+
+    // Layout B — podium filled 1&2, 3着 empty; turf gates
+    const empty = { n:'?', bg:'#E9DCC2', fg:'#B7A582', bd:'#D3C09A' };
+    const podB = { '1': byN('3'), '2': byN('1'), '3': empty };
+    const choicesB = C.map(g => {
+      const a = assignedOf(g.n);
+      const used = a === '1着' || a === '2着';
+      return { ...g,
+        op: used ? '0.45' : '1',
+        tag: used ? a + ' に出走' : '',
+        tagFg: '#3E6F52',
+      };
+    });
+
+    // Layout C — slots (1着,2着 filled, 3着 empty), cards
+    const slotsC = [
+      { pos:'1着', ...byN('3'), slotBg:'#FBEFD9', slotBd:'#E3B42A', slotBorderStyle:'solid', posFg:'#A14A3F' },
+      { pos:'2着', ...byN('1'), slotBg:'#FBEFD9', slotBd:'#E3B42A', slotBorderStyle:'solid', posFg:'#A14A3F' },
+      { pos:'3着', n:'?', name:'未選択', bg:'#EFE2C6', fg:'#B7A582', bd:'#D8C6A4', slotBg:'#F4ECD8', slotBd:'#C8A27C', slotBorderStyle:'dashed', posFg:'#B7A582' },
+    ];
+    const choicesC = C.map(g => {
+      const a = assignedOf(g.n);
+      const used = a === '1着' || a === '2着';
+      return { ...g,
+        op: used ? '0.5' : '1',
+        cardBd: used ? '#E0CFAD' : '#E3D4B8',
+        state: used ? (a + ' に選択中') : '枠に入れる',
+        stateFg: used ? '#FFF7EA' : '#6B4F3A',
+        stateBg: used ? '#C56A2C' : '#EFE2C6',
+      };
+    });
+
+    return { choices: C, choicesA, ticketA, podB, choicesB, slotsC, choicesC };
+  }
+}
+</script>
+</body>
+</html>

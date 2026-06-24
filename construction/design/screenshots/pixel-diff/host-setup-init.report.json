@@ -1,0 +1,14 @@
+{
+  "frameId": "host-setup-init",
+  "pixelDiffCount": null,
+  "totalPixels": null,
+  "ratio": null,
+  "designRenderSuccess": true,
+  "implAvailable": true,
+  "files": {
+    "design": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-setup-init.design.png",
+    "impl": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-setup-init.impl.png",
+    "diff": "/Users/mizunomakoto/Project/boardgame_make_for/construction/design/screenshots/pixel-diff/host-setup-init.diff.png"
+  },
+  "error": null
+}

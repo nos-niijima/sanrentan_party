@@ -1,0 +1,41 @@
+{
+  "screen": "host-desktop-truth-pick",
+  "implPath": "/Users/mizunomakoto/Project/boardgame_make_for/apps/frontend/src/components/games/sanrentan/screens/HostScreen.tsx",
+  "elements": [
+    {
+      "selector": "DesktopRail aside (data-testid=sr-host-desktop-rail)",
+      "kind": "display",
+      "wiredTo": "none",
+      "alive": false,
+      "decorative": "desktop chrome の左 rail コンテナ (truth-pick phase)"
+    },
+    {
+      "selector": "DesktopRail 進行ステップ (step=3 current, step=1,2 done)",
+      "kind": "display",
+      "wiredTo": "client.desktopStep (showReveal → 3)",
+      "alive": true,
+      "userTask": "正解選択中 (締切前) であることを desktop rail で確認"
+    },
+    {
+      "selector": "DesktopAside 提出状況サマリ (phase=reveal)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.submittedSeats + rows.length",
+      "alive": true,
+      "userTask": "右 aside で提出済/未提出を数値で確認する"
+    },
+    {
+      "selector": "DesktopAside 参加者ごとの提出ステータスバッジ (提出済/未提出)",
+      "kind": "display",
+      "wiredTo": "backend.Room.state.round.submittedSeats (per seat)",
+      "alive": true,
+      "userTask": "誰が未提出かを desktop で個別に把握する"
+    },
+    {
+      "selector": "中央 mobile shell HostReveal (緑お題ヘッダー + 選択肢 + 赤 CTA)",
+      "kind": "display",
+      "wiredTo": "client.HostReveal (既存 mobile shell)",
+      "alive": true,
+      "userTask": "desktop でも mobile と同じ正解 picker を中央列で使用する"
+    }
+  ]
+}
